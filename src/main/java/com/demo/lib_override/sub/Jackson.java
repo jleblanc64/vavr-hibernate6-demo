@@ -3,6 +3,7 @@ package com.demo.lib_override.sub;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectReader;
 import com.google.gson.JsonParser;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.testcontainers.shaded.org.apache.commons.io.IOUtils;
 
 import java.io.InputStream;
@@ -19,8 +20,9 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 
 public class Jackson {
     public static void override() {
-        // is called where "org.springframework.http.converter.HttpMessageNotReadableException: JSON parse error:" is thrown
+        // TODO augment AbstractJackson2HttpMessageConverter.readJavaType() instead
         mSelf(ObjectReader.class, "readValue", argsS -> {
+            HttpMessageNotReadableException h;
             var args = argsS.args;
             var self = argsS.self;
 
