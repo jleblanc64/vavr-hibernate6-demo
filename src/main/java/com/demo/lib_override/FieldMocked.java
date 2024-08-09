@@ -55,4 +55,11 @@ public class FieldMocked {
         f.setAccessible(true);
         return (List<T>) f.get(o);
     }
+
+    @SneakyThrows
+    public static void setRefl(Object o, String field, Object value) {
+        var f = o.getClass().getDeclaredField(field);
+        f.setAccessible(true);
+        f.set(o, value);
+    }
 }
