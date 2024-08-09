@@ -4,7 +4,6 @@ import lombok.SneakyThrows;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Type;
-import java.util.List;
 
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
@@ -27,38 +26,13 @@ public class FieldMocked {
     }
 
     @SneakyThrows
-    public static <T> T getRefl(Object o, String field, Class<T> c) {
-        try {
-            return getRefl(o, field, o.getClass(), c);
-        } catch (Exception ignored) {
-            return getRefl(o, field, o.getClass().getSuperclass(), c);
-        }
-    }
-
-    @SneakyThrows
-    public static <T> List<T> getReflL(Object o, String field, Class<T> c) {
-        try {
-            return getReflL(o, field, o.getClass(), c);
-        } catch (Exception ignored) {
-            return getReflL(o, field, o.getClass().getSuperclass(), c);
-        }
-    }
-
-    private static <T> T getRefl(Object o, String field, Class clazz, Class<T> c) throws NoSuchFieldException, IllegalAccessException {
-        var f = clazz.getDeclaredField(field);
+    public static <T> T getRefl(Object o, Field f) {
         f.setAccessible(true);
         return (T) f.get(o);
     }
 
-    private static <T> List<T> getReflL(Object o, String field, Class clazz, Class<T> c) throws NoSuchFieldException, IllegalAccessException {
-        var f = clazz.getDeclaredField(field);
-        f.setAccessible(true);
-        return (List<T>) f.get(o);
-    }
-
     @SneakyThrows
-    public static void setRefl(Object o, String field, Object value) {
-        var f = o.getClass().getDeclaredField(field);
+    public static void setRefl(Object o, Field f, Object value) {
         f.setAccessible(true);
         f.set(o, value);
     }
