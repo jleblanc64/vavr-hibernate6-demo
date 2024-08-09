@@ -15,7 +15,8 @@ public class Jackson {
     public static void override() {
         mExit(AbstractJackson2HttpMessageConverter.class, "readJavaType", returned -> {
 
-            f(get(Fields.of(returned.getClass()))).forEach(f -> {
+            var fields = f(get(Fields.of(returned.getClass())));
+            fields.forEach(f -> {
                 if (!f.getType().equals(Optional.class))
                     return;
 
