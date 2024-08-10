@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import org.springframework.http.HttpInputMessage;
+import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.AbstractJackson2HttpMessageConverter;
 import org.springframework.util.StreamUtils;
 
@@ -40,6 +41,13 @@ public class Jackson {
             return deser;
         });
 
-        m(AbstractJackson2HttpMessageConverter.class, "canRead", args -> true);
+        // be tolerant, still try to deser if mediaType == null
+        m(AbstractJackson2HttpMessageConverter.class, "canRead", args -> {
+            if (args.length != 3)
+                return null;
+
+            var mediaType = (MediaType) args[2];
+            return mediaType == null || mediaType.toString().toLowerCase().contains("application/json");
+        });
     }
 }
