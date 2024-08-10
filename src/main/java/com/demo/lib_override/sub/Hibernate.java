@@ -1,6 +1,7 @@
 package com.demo.lib_override.sub;
 
 import com.demo.functional.IListF;
+import com.demo.functional.IOptionF;
 import com.demo.lib_override.ValueWrapper;
 import org.hibernate.collection.spi.PersistentBag;
 import org.hibernate.mapping.BasicValue;
@@ -10,9 +11,9 @@ import org.hibernate.type.descriptor.java.spi.UnknownBasicJavaType;
 import org.hibernate.type.descriptor.jdbc.VarcharJdbcType;
 
 import java.lang.reflect.Field;
-import java.util.Optional;
 
 import static com.demo.functional.ListF.f;
+import static com.demo.functional.OptionF.o;
 import static com.demo.lib_override.FieldMocked.getRefl;
 import static com.demo.lib_override.OverrideLibs.*;
 
@@ -42,17 +43,17 @@ public class Hibernate {
             var v = args[0];
             var type = (Class<?>) args[1];
 
-            if (type.equals(String.class) && v instanceof Optional) {
+            if (type == String.class && v instanceof IOptionF) {
 
-                var o = (Optional<?>) v;
-                if (o.isPresent())
+                var o = (IOptionF<?>) v;
+                if (o.o().opt().isPresent())
                     return o.get();
 
                 return new ValueWrapper(null);
             }
 
-            if (type.equals(Optional.class) && !(v instanceof Optional))
-                return Optional.of(v);
+            if (type == IOptionF.class && !(v instanceof IOptionF))
+                return o(v);
 
             return v;
         });
@@ -63,16 +64,16 @@ public class Hibernate {
             var v = args[0];
             var type = u.getJavaTypeClass();
 
-            if (type.equals(String.class) && v instanceof Optional) {
-                var o = (Optional<?>) v;
-                if (o.isPresent())
+            if (type == String.class && v instanceof IOptionF) {
+                var o = (IOptionF<?>) v;
+                if (o.o().opt().isPresent())
                     return o.get();
 
                 return new ValueWrapper(null);
             }
 
-            if (type.equals(Optional.class) && !(v instanceof Optional))
-                return Optional.of(v);
+            if (type == IOptionF.class && !(v instanceof IOptionF))
+                return o(v);
 
             return v;
         });
@@ -84,7 +85,7 @@ public class Hibernate {
             var self = argsSelf.self;
             var field = (Field) getRefl(self, SetterFieldImpl.class.getDeclaredField("field"));
 
-            if (field.getType().equals(IListF.class)) {
+            if (field.getType() == IListF.class) {
                 var bag = (PersistentBag) args[1];
                 return f(bag);
             }

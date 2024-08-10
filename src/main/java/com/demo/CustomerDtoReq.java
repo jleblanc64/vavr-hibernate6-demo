@@ -1,6 +1,7 @@
 package com.demo;
 
 import com.demo.functional.IListF;
+import com.demo.functional.IOptionF;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -14,7 +15,7 @@ import static com.demo.functional.ListF.f;
 @Setter
 @NoArgsConstructor
 public class CustomerDtoReq {
-    private Optional<String> name;
+    private IOptionF<String> name;
     private IListF<OrderDto> orders;
 
     public Customer toCustomer() {

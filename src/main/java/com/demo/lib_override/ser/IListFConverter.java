@@ -1,4 +1,4 @@
-package com.demo.lib_override.sub;
+package com.demo.lib_override.ser;
 
 import com.demo.functional.IListF;
 import com.fasterxml.jackson.databind.JavaType;

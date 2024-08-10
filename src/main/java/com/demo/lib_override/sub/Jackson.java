@@ -1,6 +1,9 @@
 package com.demo.lib_override.sub;
 
 import com.demo.functional.IListF;
+import com.demo.functional.IOptionF;
+import com.demo.lib_override.ser.IListFDeserializer;
+import com.demo.lib_override.ser.IOptionFModule;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
@@ -10,8 +13,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.AbstractJackson2HttpMessageConverter;
 import org.springframework.util.StreamUtils;
 
-import java.util.Optional;
-
+import static com.demo.functional.OptionF.emptyO;
 import static com.demo.lib_override.FieldMocked.*;
 import static com.demo.lib_override.OverrideLibs.m;
 
@@ -24,18 +26,19 @@ public class Jackson {
 
             var om = new ObjectMapper();
             om.registerModule(new Jdk8Module());
+            om.registerModule(new IOptionFModule());
 
             var simpleModule = new SimpleModule().addDeserializer(IListF.class, new IListFDeserializer());
             om.registerModule(simpleModule);
 
             var deser = om.readValue(inputStream, javaType.getRawClass());
             fields(deser).forEach(f -> {
-                if (!f.getType().equals(Optional.class))
+                if (f.getType() != IOptionF.class)
                     return;
 
                 var opt = getRefl(deser, f);
                 if (opt == null)
-                    setRefl(deser, f, Optional.empty());
+                    setRefl(deser, f, emptyO());
             });
 
             return deser;
