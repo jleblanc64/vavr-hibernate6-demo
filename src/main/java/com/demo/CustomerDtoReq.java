@@ -20,7 +20,7 @@ public class CustomerDtoReq {
         c.setName(name);
 
         if (orders != null)
-            c.setOrders(orders.stream().map(OrderDto::toOrder).collect(Collectors.toList()));
+            c.setOrders(orders.stream().map(x -> x.toOrder(c)).collect(Collectors.toList()));
         return c;
     }
 }

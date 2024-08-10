@@ -1,8 +1,7 @@
 package com.demo;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.json.JSONObject;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -18,6 +17,7 @@ import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @Testcontainers
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -37,55 +37,60 @@ public class ApplicationTests {
     }
 
     @Autowired
-    TestRestTemplate restTemplate;
+    TestRestTemplate cli;
 
     @Test
-    public void contextLoads() throws JsonProcessingException {
+    public void contextLoads() throws Exception {
         var url = "http://localhost:" + port + "/customers";
 
         // POST customer
-        var headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        var request = new HttpEntity<>("{\"name\":\"a\"}", headers);
-        var resp = restTemplate.postForObject(url, request, String.class);
+        var hdrs = new HttpHeaders();
+        hdrs.setContentType(MediaType.APPLICATION_JSON);
+        var req = new HttpEntity<>("{\"name\":\"a\"}", hdrs);
+        var resp = cli.postForObject(url, req, String.class);
 
         // extract ID from created customer
-        ObjectMapper objectMapper = new ObjectMapper();
-        JsonNode root = objectMapper.readTree(resp);
+        var om = new ObjectMapper();
+        var root = om.readTree(resp);
         long id = root.path("id").longValue();
 
         // GET by ID
-        resp = restTemplate.getForObject(url + "/" + id, String.class);
-        root = objectMapper.readTree(resp);
+        resp = cli.getForObject(url + "/" + id, String.class);
+        root = om.readTree(resp);
         var name = root.path("name").textValue();
         assertThat(name).isEqualTo("a");
 
         // LIST
-        resp = restTemplate.getForObject(url, String.class);
-        root = objectMapper.readTree(resp);
+        resp = cli.getForObject(url, String.class);
+        root = om.readTree(resp);
         assertThat(root.size()).isEqualTo(1);
 
         name = root.path(0).path("name").textValue();
         assertThat(name).isEqualTo("a");
 
         // DELETE
-        restTemplate.delete(url + "/" + id, request, String.class);
+        cli.delete(url + "/" + id, req, String.class);
 
         // LIST
-        resp = restTemplate.getForObject(url, String.class);
-        root = objectMapper.readTree(resp);
+        resp = cli.getForObject(url, String.class);
+        root = om.readTree(resp);
         assertThat(root.size()).isEqualTo(0);
 
         // GET by ID should respond 404 NOT FOUND
-        int httpCode = restTemplate.getForEntity(url + "/" + id, String.class).getStatusCodeValue();
+        int httpCode = cli.getForEntity(url + "/" + id, String.class).getStatusCodeValue();
         assertThat(httpCode).isEqualTo(404);
 
         // empty name
-        request = new HttpEntity<>("{}", headers);
+        req = new HttpEntity<>("{}", hdrs);
 
-        resp = restTemplate.postForObject(url, request, String.class);
-        root = objectMapper.readTree(resp);
+        resp = cli.postForObject(url, req, String.class);
+        root = om.readTree(resp);
         name = root.path("name").textValue();
         assertThat(name).isEqualTo("default");
+
+        // orders
+        req = new HttpEntity<>("{\"name\":\"a\",\"orders\":[{\"description\":\"d\"}]}", hdrs);
+        resp = cli.postForObject(url, req, String.class);
+        assertEquals(1, new JSONObject(resp).getJSONArray("orders").length());
     }
 }
