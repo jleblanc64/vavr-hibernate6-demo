@@ -2,6 +2,7 @@ package com.demo;
 
 import com.demo.lib_override.OverrideLibs;
 import com.zaxxer.hikari.HikariDataSource;
+import org.flywaydb.core.Flyway;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -30,6 +31,10 @@ public class DataSourceConfig {
 
         // default is 10
         ds.setMaximumPoolSize(8);
+
+        var config = Flyway.configure().dataSource(url, username, password);
+        config.load().migrate();
+
         return ds;
     }
 }

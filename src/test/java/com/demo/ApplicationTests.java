@@ -27,7 +27,7 @@ public class ApplicationTests {
     int port;
 
     @Container
-    static MySQLContainer<?> mysql = new MySQLContainer<>("mysql:5.5").withDatabaseName("database").withPassword("test").withPassword("test");
+    static MySQLContainer<?> mysql = new MySQLContainer<>("mysql:8.0").withDatabaseName("database").withPassword("test").withPassword("test");
 
     @DynamicPropertySource
     static void mysqlProperties(DynamicPropertyRegistry registry) {
