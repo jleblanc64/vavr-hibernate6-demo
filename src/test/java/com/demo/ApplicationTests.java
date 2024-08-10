@@ -89,8 +89,8 @@ public class ApplicationTests {
         assertThat(name).isEqualTo("default");
 
         // orders
-        req = new HttpEntity<>("{\"name\":\"a\",\"orders\":[{\"description\":\"d\"}]}", hdrs);
+        req = new HttpEntity<>("{\"name\":\"a\",\"orders\":[{\"description\":\"d\"},{\"description\":\"d2\"}]}", hdrs);
         resp = cli.postForObject(url, req, String.class);
-        assertEquals(1, new JSONObject(resp).getJSONArray("orders").length());
+        assertEquals(2, new JSONObject(resp).getJSONArray("orders").length());
     }
 }

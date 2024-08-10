@@ -2,8 +2,8 @@ package com.demo.lib_override;
 
 import com.demo.functional.Functor;
 import com.demo.functional.ListF;
-import com.demo.lib_override.sub.Jackson;
 import com.demo.lib_override.sub.Hibernate;
+import com.demo.lib_override.sub.Jackson;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.SneakyThrows;
@@ -141,7 +141,7 @@ public class OverrideLibs {
         methodsArgsMod.add(new MethodDescArgsMod(name, new MethodArgIdx(argIdx, method), clazz));
     }
 
-    public static void mArgsModSelf(Class<?> clazz, String name, int argIdx, Function<ArgsSelf, Object> method) {
+    public static void mArgsModSelf(Class<?> clazz, String name, int argIdx, Functor.ThrowingFunction<ArgsSelf, Object> method) {
         methodsArgsModSelf.add(new MethodDescArgsModSelf(name, new MethodArgIdxSelf(argIdx, method), clazz));
     }
 
@@ -157,7 +157,8 @@ public class OverrideLibs {
         }
 
         Hibernate.override();
-        Jackson.override();
+        Hibernate.overrideIListF();
+        Jackson.overrideOptionEmpty();
 
         // fill nameToMethod
         nameToMethod = methods.toMap(m -> m.name, m -> m.method);

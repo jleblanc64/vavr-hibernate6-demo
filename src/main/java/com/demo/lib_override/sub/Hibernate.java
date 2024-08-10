@@ -1,15 +1,20 @@
 package com.demo.lib_override.sub;
 
+import com.demo.functional.IListF;
 import com.demo.lib_override.ValueWrapper;
+import org.hibernate.collection.spi.PersistentBag;
 import org.hibernate.mapping.BasicValue;
 import org.hibernate.mapping.Column;
+import org.hibernate.property.access.spi.SetterFieldImpl;
 import org.hibernate.type.descriptor.java.spi.UnknownBasicJavaType;
 import org.hibernate.type.descriptor.jdbc.VarcharJdbcType;
 
+import java.lang.reflect.Field;
 import java.util.Optional;
 
-import static com.demo.lib_override.OverrideLibs.m;
-import static com.demo.lib_override.OverrideLibs.mSelf;
+import static com.demo.functional.ListF.f;
+import static com.demo.lib_override.FieldMocked.getRefl;
+import static com.demo.lib_override.OverrideLibs.*;
 
 public class Hibernate {
     public static void override() {
@@ -70,6 +75,21 @@ public class Hibernate {
                 return Optional.of(v);
 
             return v;
+        });
+    }
+
+    public static void overrideIListF() {
+        mArgsModSelf(SetterFieldImpl.class, "set", 1, argsSelf -> {
+            var args = argsSelf.args;
+            var self = argsSelf.self;
+            var field = (Field) getRefl(self, SetterFieldImpl.class.getDeclaredField("field"));
+
+            if (field.getType().equals(IListF.class)) {
+                var bag = (PersistentBag) args[1];
+                return f(bag);
+            }
+
+            return null;
         });
     }
 }

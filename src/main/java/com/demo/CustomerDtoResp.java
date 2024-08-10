@@ -5,7 +5,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -18,6 +17,6 @@ public class CustomerDtoResp {
     public CustomerDtoResp(Customer c) {
         id = c.getId();
         name = c.getName().orElse("default");
-        orders = c.getOrders().stream().map(OrderDto::new).collect(Collectors.toList());
+        orders = c.getOrders().map(OrderDto::new);
     }
 }

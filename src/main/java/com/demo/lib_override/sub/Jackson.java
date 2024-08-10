@@ -12,7 +12,7 @@ import static org.reflections.ReflectionUtils.Fields;
 import static org.reflections.ReflectionUtils.get;
 
 public class Jackson {
-    public static void override() {
+    public static void overrideOptionEmpty() {
         mExit(AbstractJackson2HttpMessageConverter.class, "readJavaType", returned -> {
 
             var fields = f(get(Fields.of(returned.getClass())));

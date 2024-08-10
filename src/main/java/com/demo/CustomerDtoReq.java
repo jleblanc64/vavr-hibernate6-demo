@@ -6,7 +6,8 @@ import lombok.Setter;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
+
+import static com.demo.functional.ListF.f;
 
 @Getter
 @Setter
@@ -20,7 +21,7 @@ public class CustomerDtoReq {
         c.setName(name);
 
         if (orders != null)
-            c.setOrders(orders.stream().map(x -> x.toOrder(c)).collect(Collectors.toList()));
+            c.setOrders(f(orders).map(x -> x.toOrder(c)));
         return c;
     }
 }
