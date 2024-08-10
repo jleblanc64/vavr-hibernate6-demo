@@ -121,7 +121,7 @@ public class OverrideLibs {
         public Function<ArgsSelf, Object> method;
     }
 
-    public static void m(Class<?> clazz, String name, Function<Object[], Object> method) {
+    public static void m(Class<?> clazz, String name, Functor.ThrowingFunction<Object[], Object> method) {
         methods.add(new MethodDesc(name, method, clazz));
     }
 
@@ -158,7 +158,7 @@ public class OverrideLibs {
 
         Hibernate.override();
         Hibernate.overrideIListF();
-        Jackson.overrideOptionEmpty();
+        Jackson.override();
 
         // fill nameToMethod
         nameToMethod = methods.toMap(m -> m.name, m -> m.method);

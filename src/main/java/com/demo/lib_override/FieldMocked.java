@@ -1,12 +1,16 @@
 package com.demo.lib_override;
 
+import com.demo.functional.ListF;
 import lombok.SneakyThrows;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Type;
 
+import static com.demo.functional.ListF.f;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
+import static org.reflections.ReflectionUtils.Fields;
+import static org.reflections.ReflectionUtils.get;
 
 public class FieldMocked {
     @SneakyThrows
@@ -35,5 +39,9 @@ public class FieldMocked {
     public static void setRefl(Object o, Field f, Object value) {
         f.setAccessible(true);
         f.set(o, value);
+    }
+
+    public static ListF<Field> fields(Object o) {
+        return f(get(Fields.of(o.getClass())));
     }
 }

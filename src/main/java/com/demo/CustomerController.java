@@ -1,6 +1,5 @@
 package com.demo;
 
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -22,7 +21,7 @@ public class CustomerController {
     }
 
     @PostMapping
-    public CustomerDtoResp createCustomer(@Valid @RequestBody CustomerDtoReqSub customer) {
+    public CustomerDtoResp createCustomer(@RequestBody CustomerDtoReqSub customer) {
         var c = customerRepository.save(customer.toCustomer());
         return new CustomerDtoResp(c);
     }

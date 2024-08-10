@@ -1,5 +1,6 @@
 package com.demo;
 
+import com.demo.functional.IListF;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -14,7 +15,7 @@ import static com.demo.functional.ListF.f;
 @NoArgsConstructor
 public class CustomerDtoReq {
     private Optional<String> name;
-    private List<OrderDto> orders;
+    private IListF<OrderDto> orders;
 
     public Customer toCustomer() {
         var c = new Customer();

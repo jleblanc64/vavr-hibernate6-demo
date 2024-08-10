@@ -1,31 +1,45 @@
 package com.demo.lib_override.sub;
 
+import com.demo.functional.IListF;
+import com.fasterxml.jackson.databind.JavaType;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.module.SimpleModule;
+import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
+import org.springframework.http.HttpInputMessage;
 import org.springframework.http.converter.json.AbstractJackson2HttpMessageConverter;
+import org.springframework.util.StreamUtils;
 
 import java.util.Optional;
 
-import static com.demo.functional.ListF.f;
-import static com.demo.lib_override.FieldMocked.getRefl;
-import static com.demo.lib_override.FieldMocked.setRefl;
-import static com.demo.lib_override.OverrideLibs.mExit;
-import static org.reflections.ReflectionUtils.Fields;
-import static org.reflections.ReflectionUtils.get;
+import static com.demo.lib_override.FieldMocked.*;
+import static com.demo.lib_override.OverrideLibs.m;
 
 public class Jackson {
-    public static void overrideOptionEmpty() {
-        mExit(AbstractJackson2HttpMessageConverter.class, "readJavaType", returned -> {
+    public static void override() {
+        m(AbstractJackson2HttpMessageConverter.class, "readJavaType", args -> {
+            var javaType = (JavaType) args[0];
+            var input = (HttpInputMessage) args[1];
+            var inputStream = StreamUtils.nonClosing(input.getBody());
 
-            var fields = f(get(Fields.of(returned.getClass())));
-            fields.forEach(f -> {
+            var om = new ObjectMapper();
+            om.registerModule(new Jdk8Module());
+
+            var simpleModule = new SimpleModule().addDeserializer(IListF.class, new IListFDeserializer());
+            om.registerModule(simpleModule);
+
+            var deser = om.readValue(inputStream, javaType.getRawClass());
+            fields(deser).forEach(f -> {
                 if (!f.getType().equals(Optional.class))
                     return;
 
-                var opt = getRefl(returned, f);
+                var opt = getRefl(deser, f);
                 if (opt == null)
-                    setRefl(returned, f, Optional.empty());
+                    setRefl(deser, f, Optional.empty());
             });
 
-            return returned;
+            return deser;
         });
+
+        m(AbstractJackson2HttpMessageConverter.class, "canRead", args -> true);
     }
 }
