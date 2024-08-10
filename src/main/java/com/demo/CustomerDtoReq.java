@@ -6,8 +6,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import static com.demo.functional.ListF.f;
-
 @Getter
 @Setter
 @NoArgsConstructor
@@ -18,9 +16,7 @@ public class CustomerDtoReq {
     public Customer toCustomer() {
         var c = new Customer();
         c.setName(name);
-
-        if (orders != null)
-            c.setOrders(f(orders).map(x -> x.toOrder(c)));
+        c.setOrders(orders.map(x -> x.toOrder(c)));
         return c;
     }
 }

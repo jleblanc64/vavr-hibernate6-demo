@@ -13,6 +13,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.AbstractJackson2HttpMessageConverter;
 import org.springframework.util.StreamUtils;
 
+import static com.demo.functional.ListF.empty;
 import static com.demo.functional.OptionF.emptyO;
 import static com.demo.lib_override.FieldMocked.*;
 import static com.demo.lib_override.OverrideLibs.m;
@@ -31,14 +32,21 @@ public class Jackson {
             var simpleModule = new SimpleModule().addDeserializer(IListF.class, new IListFDeserializer());
             om.registerModule(simpleModule);
 
+            // init null values
             var deser = om.readValue(inputStream, javaType.getRawClass());
             fields(deser).forEach(f -> {
-                if (f.getType() != IOptionF.class)
+                var type = f.getType();
+                Object empty;
+                if (type == IOptionF.class)
+                    empty = emptyO();
+                else if (type == IListF.class)
+                    empty = empty();
+                else
                     return;
 
-                var opt = getRefl(deser, f);
-                if (opt == null)
-                    setRefl(deser, f, emptyO());
+                var o = getRefl(deser, f);
+                if (o == null)
+                    setRefl(deser, f, empty);
             });
 
             return deser;
