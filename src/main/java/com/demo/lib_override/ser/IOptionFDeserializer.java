@@ -11,7 +11,6 @@ import com.fasterxml.jackson.databind.jsontype.TypeDeserializer;
 
 import static com.demo.functional.OptionF.o;
 
-// https://github.com/FasterXML/jackson-modules-java8/blob/2.13/datatypes/src/main/java/com/fasterxml/jackson/datatype/jdk8/OptionalDeserializer.java
 final class IOptionFDeserializer
         extends ReferenceTypeDeserializer<IOptionF<?>> {
     private static final long serialVersionUID = 1L;
