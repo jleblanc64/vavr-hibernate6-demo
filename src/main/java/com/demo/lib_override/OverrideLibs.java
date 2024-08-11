@@ -121,27 +121,25 @@ public class OverrideLibs {
         public Function<ArgsSelf, Object> method;
     }
 
-    public static void m(Class<?> clazz, String name, Functor.ThrowingFunction<Object[], Object> method) {
+    public static void override(Class<?> clazz, String name, Functor.ThrowingFunction<Object[], Object> method) {
         methods.add(new MethodDesc(name, method, clazz));
     }
 
-    public static void mSelf(Class<?> clazz, String name, Functor.ThrowingFunction<ArgsSelf, Object> method) {
+    public static void overrideWithSelf(Class<?> clazz, String name, Functor.ThrowingFunction<ArgsSelf, Object> method) {
+        // TODO check that function is not static
+
         methodsSelf.add(new MethodDescSelf(name, method, clazz));
     }
 
-    public static void mExit(Class<?> clazz, String name, Function<Object, Object> method) {
-        methodsExit.add(new MethodDescExit(name, method, clazz));
-    }
-
-    public static void mExitArgs(Class<?> clazz, String name, Function<ArgsReturned, Object> method) {
+    public static void modifyReturned(Class<?> clazz, String name, Function<ArgsReturned, Object> method) {
         methodsExitArgs.add(new MethodDescExitArgs(name, method, clazz));
     }
 
-    public static void mArgsMod(Class<?> clazz, String name, int argIdx, Function<Object[], Object> method) {
+    public static void modifyArgs(Class<?> clazz, String name, int argIdx, Function<Object[], Object> method) {
         methodsArgsMod.add(new MethodDescArgsMod(name, new MethodArgIdx(argIdx, method), clazz));
     }
 
-    public static void mArgsModSelf(Class<?> clazz, String name, int argIdx, Functor.ThrowingFunction<ArgsSelf, Object> method) {
+    public static void modifyArgsWithSelf(Class<?> clazz, String name, int argIdx, Functor.ThrowingFunction<ArgsSelf, Object> method) {
         methodsArgsModSelf.add(new MethodDescArgsModSelf(name, new MethodArgIdxSelf(argIdx, method), clazz));
     }
 

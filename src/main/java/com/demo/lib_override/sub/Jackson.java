@@ -2,6 +2,7 @@ package com.demo.lib_override.sub;
 
 import com.demo.functional.ListF;
 import com.demo.functional.OptionF;
+import com.demo.lib_override.OverrideLibs;
 import com.demo.lib_override.ser.ListFDeserializer;
 import com.demo.lib_override.ser.OptionFModule;
 import com.fasterxml.jackson.databind.JavaType;
@@ -16,11 +17,10 @@ import org.springframework.util.StreamUtils;
 import static com.demo.functional.ListF.empty;
 import static com.demo.functional.OptionF.emptyO;
 import static com.demo.lib_override.FieldMocked.*;
-import static com.demo.lib_override.OverrideLibs.m;
 
 public class Jackson {
     public static void override() {
-        m(AbstractJackson2HttpMessageConverter.class, "readJavaType", args -> {
+        OverrideLibs.override(AbstractJackson2HttpMessageConverter.class, "readJavaType", args -> {
             var javaType = (JavaType) args[0];
             var input = (HttpInputMessage) args[1];
             var inputStream = StreamUtils.nonClosing(input.getBody());
@@ -53,7 +53,7 @@ public class Jackson {
         });
 
         // be tolerant, still try to deser if mediaType == null
-        m(AbstractJackson2HttpMessageConverter.class, "canRead", args -> {
+        OverrideLibs.override(AbstractJackson2HttpMessageConverter.class, "canRead", args -> {
             if (args.length != 3)
                 return null;
 

@@ -2,6 +2,7 @@ package com.demo.lib_override.sub;
 
 import com.demo.functional.ListF;
 import com.demo.functional.OptionF;
+import com.demo.lib_override.OverrideLibs;
 import com.demo.lib_override.ValueWrapper;
 import org.hibernate.collection.spi.PersistentBag;
 import org.hibernate.mapping.BasicValue;
@@ -19,7 +20,7 @@ import static com.demo.lib_override.OverrideLibs.*;
 
 public class Hibernate {
     public static void override() {
-        m(UnknownBasicJavaType.class, "getRecommendedJdbcType", args -> {
+        OverrideLibs.override(UnknownBasicJavaType.class, "getRecommendedJdbcType", args -> {
             var ind = args[0];
             if (!(ind instanceof BasicValue))
                 return null;
@@ -38,7 +39,7 @@ public class Hibernate {
             return null;
         });
 
-        mSelf(UnknownBasicJavaType.class, "unwrap", argsSelf -> {
+        overrideWithSelf(UnknownBasicJavaType.class, "unwrap", argsSelf -> {
             var args = argsSelf.args;
             var v = args[0];
             var type = (Class<?>) args[1];
@@ -58,7 +59,7 @@ public class Hibernate {
             return v;
         });
 
-        mSelf(UnknownBasicJavaType.class, "wrap", argsSelf -> {
+        overrideWithSelf(UnknownBasicJavaType.class, "wrap", argsSelf -> {
             var args = argsSelf.args;
             var u = (UnknownBasicJavaType) argsSelf.self;
             var v = args[0];
@@ -80,7 +81,7 @@ public class Hibernate {
     }
 
     public static void overrideIListF() {
-        mArgsModSelf(SetterFieldImpl.class, "set", 1, argsSelf -> {
+        modifyArgsWithSelf(SetterFieldImpl.class, "set", 1, argsSelf -> {
             var args = argsSelf.args;
             var self = argsSelf.self;
             var field = (Field) getRefl(self, SetterFieldImpl.class.getDeclaredField("field"));
