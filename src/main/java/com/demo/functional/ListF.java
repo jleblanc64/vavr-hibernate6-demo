@@ -81,14 +81,6 @@ public class ListF<T> implements IListF<T> {
     }
 
     @Override
-    public boolean anyMatch(Predicate<T> p) {
-        if (l == null)
-            return false;
-
-        return l.stream().anyMatch(p);
-    }
-
-    @Override
     public boolean allMatch(Predicate<T> p) {
         if (l == null)
             return false;

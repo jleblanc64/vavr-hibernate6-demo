@@ -30,11 +30,6 @@ public class OptionF<T> implements IOptionF<T> {
         return new OptionF<>(l);
     }
 
-    @Override
-    public void clear() {
-        l.clear();
-    }
-
     public static void checkSize(List<?> l) {
         if (l != null && l.size() > 1)
             throw new RuntimeException("Not supported");
