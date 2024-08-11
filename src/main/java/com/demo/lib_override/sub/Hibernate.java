@@ -46,7 +46,7 @@ public class Hibernate {
             if (type == String.class && v instanceof OptionF) {
 
                 var o = (OptionF<?>) v;
-                if (o.o().opt().isPresent())
+                if (o.isPresent())
                     return o.get();
 
                 return new ValueWrapper(null);
@@ -66,7 +66,7 @@ public class Hibernate {
 
             if (type == String.class && v instanceof OptionF) {
                 var o = (OptionF<?>) v;
-                if (o.o().opt().isPresent())
+                if (o.isPresent())
                     return o.get();
 
                 return new ValueWrapper(null);

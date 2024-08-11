@@ -29,8 +29,12 @@ public class OptionF<T> {
             throw new RuntimeException("Not supported");
     }
 
-    public Optional<T> opt() {
+    private Optional<T> opt() {
         return l == null || l.isEmpty() ? Optional.empty() : ofNullable(l.get(0));
+    }
+
+    public boolean isPresent(){
+        return opt().isPresent();
     }
 
     public <U> OptionF<U> map(Function<T, U> f) {
