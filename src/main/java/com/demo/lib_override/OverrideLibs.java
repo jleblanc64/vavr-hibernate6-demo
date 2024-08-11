@@ -12,6 +12,7 @@ import net.bytebuddy.agent.builder.AgentBuilder;
 import net.bytebuddy.asm.Advice;
 import net.bytebuddy.description.NamedElement;
 
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.function.Function;
@@ -24,6 +25,8 @@ import static net.bytebuddy.agent.builder.AgentBuilder.TypeStrategy.Default.REDE
 import static net.bytebuddy.matcher.ElementMatcher.Junction;
 import static net.bytebuddy.matcher.ElementMatchers.named;
 import static net.bytebuddy.matcher.ElementMatchers.none;
+import static org.reflections.ReflectionUtils.Methods;
+import static org.reflections.ReflectionUtils.get;
 
 public class OverrideLibs {
     public static Map<String, Function<Object[], Object>> nameToMethod;
@@ -126,7 +129,11 @@ public class OverrideLibs {
     }
 
     public static void overrideWithSelf(Class<?> clazz, String name, Functor.ThrowingFunction<ArgsSelf, Object> method) {
-        // TODO check that function is not static
+        var methods = f(get(Methods.of(clazz)));
+        var m = methods.findSafe(x -> x.getName().equals(name));
+        var isStatic = Modifier.isStatic(m.getModifiers());
+        if (isStatic)
+            throw new RuntimeException("WithSelf doesn't work for static methods");
 
         methodsSelf.add(new MethodDescSelf(name, method, clazz));
     }

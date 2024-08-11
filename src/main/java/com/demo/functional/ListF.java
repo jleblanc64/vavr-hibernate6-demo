@@ -74,6 +74,10 @@ public class ListF<T> implements List<T> {
         l.forEach(f);
     }
 
+    public T findSafe(Predicate<T> p) {
+        return stream().filter(p).findFirst().orElse(null);
+    }
+
     public int findIdx(Predicate<T> p) {
         for (int i = 0; i < l.size(); i++)
             if (p.test(l.get(i)))
