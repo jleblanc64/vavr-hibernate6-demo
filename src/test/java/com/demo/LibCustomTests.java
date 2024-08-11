@@ -1,6 +1,7 @@
 package com.demo;
 
 import com.demo.lib_override.LibCustom;
+import lombok.AllArgsConstructor;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -56,7 +57,39 @@ public class LibCustomTests {
         assertEquals(16, A.g());
     }
 
+    @Test
+    void testSelf() {
+        var a = new A(11);
+        assertEquals(11, a.get());
+        assertEquals(13, a.getX(2));
+
+        LibCustom.overrideWithSelf(A.class, "get", argsSelf -> {
+            var self = (A) argsSelf.self;
+            return self.a + 1;
+        });
+        LibCustom.modifyArgWithSelf(A.class, "getX", 0, argsSelf -> {
+            var x = (int) argsSelf.args[0];
+            var self = (A) argsSelf.self;
+            return self.a - x;
+        });
+        LibCustom.load();
+
+        assertEquals(12, a.get());
+        assertEquals(20, a.getX(2));
+    }
+
+    @AllArgsConstructor
     static class A {
+        private int a;
+
+        int get() {
+            return a;
+        }
+
+        int getX(int x) {
+            return a + x;
+        }
+
         static int f() {
             return 0;
         }
