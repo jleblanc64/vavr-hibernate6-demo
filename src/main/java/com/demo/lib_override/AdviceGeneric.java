@@ -5,7 +5,7 @@ import net.bytebuddy.asm.Advice;
 import java.lang.reflect.Method;
 
 import static com.demo.functional.OptionF.o;
-import static com.demo.lib_override.LibCustom.*;
+import static com.demo.lib_override.Internal.*;
 import static net.bytebuddy.implementation.bytecode.assign.Assigner.Typing.DYNAMIC;
 
 public class AdviceGeneric {
