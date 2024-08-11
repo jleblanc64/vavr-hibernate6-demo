@@ -1,9 +1,9 @@
 package com.demo;
 
-import com.demo.lib_override.LibCustom;
 import com.demo.lib_override.sub.Hibernate;
 import com.demo.lib_override.sub.Jackson;
 import com.zaxxer.hikari.HikariDataSource;
+import io.github.jleblanc64.libcustom.LibCustom;
 import org.flywaydb.core.Flyway;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;

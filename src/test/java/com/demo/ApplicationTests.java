@@ -40,7 +40,7 @@ public class ApplicationTests {
     TestRestTemplate cli;
 
     @Test
-    public void contextLoads() throws Exception {
+    public void test() throws Exception {
         var url = "http://localhost:" + port + "/customers";
 
         // POST customer

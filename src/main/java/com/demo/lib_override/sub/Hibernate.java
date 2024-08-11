@@ -2,8 +2,8 @@ package com.demo.lib_override.sub;
 
 import com.demo.functional.ListF;
 import com.demo.functional.OptionF;
-import com.demo.lib_override.LibCustom;
-import com.demo.lib_override.ValueWrapper;
+import io.github.jleblanc64.libcustom.LibCustom;
+import io.github.jleblanc64.libcustom.ValueWrapper;
 import org.hibernate.collection.spi.PersistentBag;
 import org.hibernate.mapping.BasicValue;
 import org.hibernate.mapping.Column;
@@ -16,8 +16,8 @@ import java.lang.reflect.Field;
 import static com.demo.functional.ListF.f;
 import static com.demo.functional.OptionF.o;
 import static com.demo.lib_override.FieldMocked.getRefl;
-import static com.demo.lib_override.LibCustom.modifyArgWithSelf;
-import static com.demo.lib_override.LibCustom.overrideWithSelf;
+import static io.github.jleblanc64.libcustom.LibCustom.modifyArgWithSelf;
+import static io.github.jleblanc64.libcustom.LibCustom.overrideWithSelf;
 
 public class Hibernate {
     public static void override() {
