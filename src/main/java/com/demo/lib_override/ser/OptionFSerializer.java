@@ -8,7 +8,7 @@ import com.fasterxml.jackson.databind.ser.std.ReferenceTypeSerializer;
 import com.fasterxml.jackson.databind.type.ReferenceType;
 import com.fasterxml.jackson.databind.util.NameTransformer;
 
-public class IOptionFSerializer
+public class OptionFSerializer
         extends ReferenceTypeSerializer<OptionF<?>> // since 2.9
 {
     private static final long serialVersionUID = 1L;
@@ -19,14 +19,14 @@ public class IOptionFSerializer
     /**********************************************************
      */
 
-    protected IOptionFSerializer(ReferenceType fullType, boolean staticTyping,
-                                 TypeSerializer vts, JsonSerializer<Object> ser) {
+    protected OptionFSerializer(ReferenceType fullType, boolean staticTyping,
+                                TypeSerializer vts, JsonSerializer<Object> ser) {
         super(fullType, staticTyping, vts, ser);
     }
 
-    protected IOptionFSerializer(IOptionFSerializer base, BeanProperty property,
-                                 TypeSerializer vts, JsonSerializer<?> valueSer, NameTransformer unwrapper,
-                                 Object suppressableValue, boolean suppressNulls) {
+    protected OptionFSerializer(OptionFSerializer base, BeanProperty property,
+                                TypeSerializer vts, JsonSerializer<?> valueSer, NameTransformer unwrapper,
+                                Object suppressableValue, boolean suppressNulls) {
         super(base, property, vts, valueSer, unwrapper,
                 suppressableValue, suppressNulls);
     }
@@ -35,14 +35,14 @@ public class IOptionFSerializer
     protected ReferenceTypeSerializer<OptionF<?>> withResolved(BeanProperty prop,
                                                                TypeSerializer vts, JsonSerializer<?> valueSer,
                                                                NameTransformer unwrapper) {
-        return new IOptionFSerializer(this, prop, vts, valueSer, unwrapper,
+        return new OptionFSerializer(this, prop, vts, valueSer, unwrapper,
                 _suppressableValue, _suppressNulls);
     }
 
     @Override
     public ReferenceTypeSerializer<OptionF<?>> withContentInclusion(Object suppressableValue,
                                                                     boolean suppressNulls) {
-        return new IOptionFSerializer(this, _property, _valueTypeSerializer,
+        return new OptionFSerializer(this, _property, _valueTypeSerializer,
                 _valueSerializer, _unwrapper,
                 suppressableValue, suppressNulls);
     }

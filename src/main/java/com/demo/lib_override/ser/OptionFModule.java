@@ -4,14 +4,14 @@ import com.fasterxml.jackson.core.Version;
 import com.fasterxml.jackson.databind.Module;
 import com.fasterxml.jackson.datatype.jdk8.PackageVersion;
 
-public class IOptionFModule extends Module {
+public class OptionFModule extends Module {
     protected boolean _cfgHandleAbsentAsNull = false;
 
     @Override
     public void setupModule(SetupContext context) {
-        context.addSerializers(new IOptionFSerializers());
-        context.addDeserializers(new IOptionFDeserializerBase());
-        context.addTypeModifier(new IOptionFTypeModifier());
+        context.addSerializers(new OptionFSerializers());
+        context.addDeserializers(new OptionFDeserializerBase());
+        context.addTypeModifier(new OptionFTypeModifier());
     }
 
     @Override
@@ -20,7 +20,7 @@ public class IOptionFModule extends Module {
     }
 
     @Deprecated
-    public IOptionFModule configureAbsentsAsNulls(boolean state) {
+    public OptionFModule configureAbsentsAsNulls(boolean state) {
         _cfgHandleAbsentAsNull = state;
         return this;
     }

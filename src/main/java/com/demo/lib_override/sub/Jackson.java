@@ -1,10 +1,9 @@
 package com.demo.lib_override.sub;
 
-import com.demo.functional.IListF;
 import com.demo.functional.ListF;
 import com.demo.functional.OptionF;
-import com.demo.lib_override.ser.IListFDeserializer;
-import com.demo.lib_override.ser.IOptionFModule;
+import com.demo.lib_override.ser.ListFDeserializer;
+import com.demo.lib_override.ser.OptionFModule;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
@@ -28,9 +27,9 @@ public class Jackson {
 
             var om = new ObjectMapper();
             om.registerModule(new Jdk8Module());
-            om.registerModule(new IOptionFModule());
+            om.registerModule(new OptionFModule());
 
-            var simpleModule = new SimpleModule().addDeserializer(ListF.class, new IListFDeserializer());
+            var simpleModule = new SimpleModule().addDeserializer(ListF.class, new ListFDeserializer());
             om.registerModule(simpleModule);
 
             // init null values

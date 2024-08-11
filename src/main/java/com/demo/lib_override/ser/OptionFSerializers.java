@@ -16,7 +16,7 @@ import java.util.stream.IntStream;
 import java.util.stream.LongStream;
 import java.util.stream.Stream;
 
-public class IOptionFSerializers extends Serializers.Base
+public class OptionFSerializers extends Serializers.Base
         implements java.io.Serializable {
     private static final long serialVersionUID = 1L;
 
@@ -28,7 +28,7 @@ public class IOptionFSerializers extends Serializers.Base
         if (OptionF.class.isAssignableFrom(raw)) {
             boolean staticTyping = (contentTypeSerializer == null)
                     && config.isEnabled(MapperFeature.USE_STATIC_TYPING);
-            return new IOptionFSerializer(refType, staticTyping,
+            return new OptionFSerializer(refType, staticTyping,
                     contentTypeSerializer, contentValueSerializer);
         }
         return null;

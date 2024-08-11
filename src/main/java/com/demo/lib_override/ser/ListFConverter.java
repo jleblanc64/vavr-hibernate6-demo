@@ -9,7 +9,7 @@ import java.util.Collection;
 
 import static com.demo.functional.ListF.f;
 
-public class IListFConverter implements Converter<Collection, ListF> {
+public class ListFConverter implements Converter<Collection, ListF> {
     @Override
     public ListF convert(Collection value) {
         return f(value);

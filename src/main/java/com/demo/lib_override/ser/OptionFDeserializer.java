@@ -11,7 +11,7 @@ import com.fasterxml.jackson.databind.jsontype.TypeDeserializer;
 
 import static com.demo.functional.OptionF.o;
 
-final class IOptionFDeserializer
+final class OptionFDeserializer
         extends ReferenceTypeDeserializer<OptionF<?>> {
     private static final long serialVersionUID = 1L;
 
@@ -24,8 +24,8 @@ final class IOptionFDeserializer
     /**
      * @since 2.9
      */
-    public IOptionFDeserializer(JavaType fullType, ValueInstantiator inst,
-                                TypeDeserializer typeDeser, JsonDeserializer<?> deser) {
+    public OptionFDeserializer(JavaType fullType, ValueInstantiator inst,
+                               TypeDeserializer typeDeser, JsonDeserializer<?> deser) {
         super(fullType, inst, typeDeser, deser);
     }
 
@@ -36,8 +36,8 @@ final class IOptionFDeserializer
      */
 
     @Override
-    public IOptionFDeserializer withResolved(TypeDeserializer typeDeser, JsonDeserializer<?> valueDeser) {
-        return new IOptionFDeserializer(_fullType, _valueInstantiator,
+    public OptionFDeserializer withResolved(TypeDeserializer typeDeser, JsonDeserializer<?> valueDeser) {
+        return new OptionFDeserializer(_fullType, _valueInstantiator,
                 typeDeser, valueDeser);
     }
 
