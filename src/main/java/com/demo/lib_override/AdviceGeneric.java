@@ -12,7 +12,7 @@ public class AdviceGeneric {
     @Advice.OnMethodEnter(skipOn = Advice.OnNonDefaultValue.class)
     public static Object enter(@Advice.AllArguments(readOnly = false, typing = DYNAMIC) Object[] args,
                                @Advice.Origin Method method) {
-        var name = method.getName();
+        var name = hash(method);
         var f = nameToMethod.get(name);
         if (f != null)
             return f.apply(args);
@@ -40,7 +40,7 @@ public class AdviceGeneric {
     }
 
     public static Object returnedOverride(Object[] args, Object returned, Method method) {
-        var name = method.getName();
+        var name = hash(method);
         var fArgs = nameToMethodExitArgs.get(name);
         if (fArgs != null)
             return fArgs.apply(new ArgsReturned(args, returned));

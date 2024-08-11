@@ -17,14 +17,17 @@ public class LibCustomTests {
 
         assertEquals(0, A.f());
         assertEquals(3, B.g(3));
+        assertEquals(4, C.f());
         LibCustom.override(A.class, "f", x -> 1);
         LibCustom.modifyArg(B.class, "g", 0, args -> {
             var i = (int) args[0];
             return i + 1;
         });
+        LibCustom.override(C.class, "f", x -> 5);
         LibCustom.load();
         assertEquals(1, A.f());
         assertEquals(4, B.g(3));
+        assertEquals(5, C.f());
 
         LibCustom.reset();
         assertEquals(0, A.f());
@@ -50,6 +53,12 @@ public class LibCustomTests {
     static class B {
         static int g(int i) {
             return i;
+        }
+    }
+
+    static class C {
+        static int f() {
+            return 4;
         }
     }
 }

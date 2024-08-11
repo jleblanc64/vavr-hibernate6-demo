@@ -12,7 +12,7 @@ public class AdviceGenericSelf {
     @Advice.OnMethodEnter(skipOn = Advice.OnNonDefaultValue.class)
     public static Object enter(@Advice.This Object self, @Advice.AllArguments(readOnly = false, typing = DYNAMIC) Object[] args,
                                @Advice.Origin Method method) {
-        var name = method.getName();
+        var name = hash(method);
 
         var f = nameToMethodSelf.get(name);
         if (f != null)

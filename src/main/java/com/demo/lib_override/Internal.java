@@ -10,6 +10,7 @@ import net.bytebuddy.description.NamedElement;
 import net.bytebuddy.matcher.ElementMatcher;
 
 import java.lang.instrument.Instrumentation;
+import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,8 +22,7 @@ import static com.demo.functional.ListF.f;
 import static net.bytebuddy.agent.builder.AgentBuilder.InitializationStrategy.NoOp.INSTANCE;
 import static net.bytebuddy.agent.builder.AgentBuilder.RedefinitionStrategy.RETRANSFORMATION;
 import static net.bytebuddy.agent.builder.AgentBuilder.TypeStrategy.Default.REDEFINE;
-import static net.bytebuddy.matcher.ElementMatchers.named;
-import static net.bytebuddy.matcher.ElementMatchers.none;
+import static net.bytebuddy.matcher.ElementMatchers.*;
 import static org.reflections.ReflectionUtils.Methods;
 import static org.reflections.ReflectionUtils.get;
 
@@ -50,9 +50,9 @@ public class Internal {
                 .with(RETRANSFORMATION)
                 .with(INSTANCE)
                 .with(REDEFINE)
-                .type(named(clazz.getName()))
+                .type(is(clazz))
                 .transform((b, type, classLoader, module, x) -> b.visit(Advice.to(adviceClass).on(named)))
-                .installOnByteBuddyAgent();
+                .installOn(instru);
 
         agents.add(agent);
     }
@@ -63,6 +63,26 @@ public class Internal {
         var isStatic = Modifier.isStatic(m.getModifiers());
         if (isStatic)
             throw new RuntimeException("WithSelf doesn't work for static methods");
+    }
+
+    public static String hash(Method m) {
+        var mm = new MethodMeta() {
+
+            @Override
+            public String getName() {
+                return m.getName();
+            }
+
+            @Override
+            public Class<?> getClazz() {
+                return m.getDeclaringClass();
+            }
+        };
+        return hash(mm);
+    }
+
+    static String hash(MethodMeta m) {
+        return m.getClazz().getName() + ":" + m.getName();
     }
 
     interface MethodMeta {

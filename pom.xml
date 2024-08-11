@@ -15,7 +15,7 @@
 
     <properties>
         <java.version>11</java.version>
-        <bytebuddy.version>1.14.12</bytebuddy.version>
+        <bytebuddy.version>1.14.18</bytebuddy.version>
         <testcontainers.version>1.20.1</testcontainers.version>
         <flyway.version>8.2.1</flyway.version>
     </properties>

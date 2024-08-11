@@ -36,13 +36,13 @@ public class LibCustom {
     @SneakyThrows
     public static void load() {
         // fill nameToMethod
-        nameToMethod = methods.toMap(m -> m.name, m -> m.method);
-        nameToMethodExit = methodsExit.toMap(m -> m.name, m -> m.method);
-        nameToMethodExitArgs = methodsExitArgs.toMap(m -> m.name, m -> m.method);
-        nameToMethodArgsMod = methodsArgsMod.toMap(m -> m.name, m -> m.method);
+        nameToMethod = methods.toMap(Internal::hash, m -> m.method);
+        nameToMethodExit = methodsExit.toMap(Internal::hash, m -> m.method);
+        nameToMethodExitArgs = methodsExitArgs.toMap(Internal::hash, m -> m.method);
+        nameToMethodArgsMod = methodsArgsMod.toMap(Internal::hash, m -> m.method);
 
-        nameToMethodSelf = methodsSelf.toMap(m -> m.name, m -> m.method);
-        nameToMethodArgsModSelf = methodsArgsModSelf.toMap(m -> m.name, m -> m.method);
+        nameToMethodSelf = methodsSelf.toMap(Internal::hash, m -> m.method);
+        nameToMethodArgsModSelf = methodsArgsModSelf.toMap(Internal::hash, m -> m.method);
 
         if (instru == null)
             instru = ByteBuddyAgent.install();
