@@ -5,7 +5,6 @@ import net.bytebuddy.agent.ByteBuddyAgent;
 
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
-import java.util.function.Function;
 
 import static com.demo.functional.Functor.ThrowingFunction;
 import static com.demo.functional.ListF.f;
@@ -29,11 +28,11 @@ public class LibCustom {
         methodsSelf.add(new MethodDescSelf(name, method, clazz));
     }
 
-    public static void modifyReturned(Class<?> clazz, String name, Function<ArgsReturned, Object> method) {
+    public static void modifyReturned(Class<?> clazz, String name, ThrowingFunction<ArgsReturned, Object> method) {
         methodsExitArgs.add(new MethodDescExitArgs(name, method, clazz));
     }
 
-    public static void modifyArgs(Class<?> clazz, String name, int argIdx, Function<Object[], Object> method) {
+    public static void modifyArgs(Class<?> clazz, String name, int argIdx, ThrowingFunction<Object[], Object> method) {
         methodsArgsMod.add(new MethodDescArgsMod(name, new MethodArgIdx(argIdx, method), clazz));
     }
 
