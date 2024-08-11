@@ -64,5 +64,13 @@ public class LibCustom {
     public static void reset() {
         agents.forEach(a -> a.reset(instru, RETRANSFORMATION));
         agents.clear();
+
+        methods.clear();
+        methodsExit.clear();
+        methodsExitArgs.clear();
+        methodsArgsMod.clear();
+
+        methodsSelf.clear();
+        methodsArgsModSelf.clear();
     }
 }
