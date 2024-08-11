@@ -20,7 +20,7 @@ public class LibCustom {
         methodsSelf.add(new MethodDescSelf(name, method, clazz));
     }
 
-    public static void modifyReturned(Class<?> clazz, String name, ThrowingFunction<ArgsReturned, Object> method) {
+    public static void modifyReturn(Class<?> clazz, String name, ThrowingFunction<ArgsReturned, Object> method) {
         methodsExitArgs.add(new MethodDescExitArgs(name, method, clazz));
     }
 

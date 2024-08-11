@@ -47,7 +47,7 @@ public class LibCustomTests {
         //
         LibCustom.reset();
         assertEquals(8, A.g());
-        LibCustom.modifyReturned(A.class, "g", argsReturned -> {
+        LibCustom.modifyReturn(A.class, "g", argsReturned -> {
             var returned = (int) argsReturned.returned;
             return 2 * returned;
         });
