@@ -1,6 +1,5 @@
 package com.demo.functional;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -9,7 +8,7 @@ import java.util.function.Supplier;
 
 import static java.util.Optional.ofNullable;
 
-public class OptionF<T> implements IOptionF<T> {
+public class OptionF<T> {
     public List<T> l;
 
     public OptionF(Optional<T> o) {
@@ -21,11 +20,6 @@ public class OptionF<T> implements IOptionF<T> {
         this.l = l;
     }
 
-    public List<T> l() {
-        return new ArrayList<>(l);
-    }
-
-    @Override
     public OptionF<T> o() {
         return new OptionF<>(l);
     }
@@ -45,10 +39,6 @@ public class OptionF<T> implements IOptionF<T> {
 
     public <U> OptionF<U> flatMap(Function<T, OptionF<U>> f) {
         return new OptionF<>(opt().flatMap(t -> f.apply(t).opt()));
-    }
-
-    public <U> OptionF<U> flatMapI(Function<T, IOptionF<U>> f) {
-        return flatMap(t -> f.apply(t).o());
     }
 
     public <U> OptionF<U> flatMapO(Function<T, Optional<U>> f) {
