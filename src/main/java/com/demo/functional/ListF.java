@@ -16,8 +16,16 @@ import static com.google.common.collect.Lists.newArrayList;
 
 @NoArgsConstructor
 @AllArgsConstructor
-public class ListF<T> implements IListF<T> {
+public class ListF<T> implements List<T> {
     private List<T> l = new ArrayList<>();
+
+    public <U> ListF<U> map(Functor.ThrowingFunction<T, U> fun) {
+        return f(stream().map(fun).collect(Collectors.toList()));
+    }
+
+    public boolean allMatch(Predicate<T> p) {
+        return stream().allMatch(p);
+    }
 
     public <U> ListF<U> map(Function<T, U> f) {
         return f(map(f::apply));
@@ -80,14 +88,6 @@ public class ListF<T> implements IListF<T> {
         return this;
     }
 
-    @Override
-    public boolean allMatch(Predicate<T> p) {
-        if (l == null)
-            return false;
-
-        return l.stream().allMatch(p);
-    }
-
     public ListF<T> merge(Collection<T> c) {
         l.addAll(c);
         return this;
@@ -142,25 +142,6 @@ public class ListF<T> implements IListF<T> {
             V v = valueMapper.apply(t);
             map.put(k, v);
         }
-
-        return map;
-    }
-
-    public <K, V> Map<K, V> toMapIdx(Function<T, K> keyGetter, BiFunction<T, Integer, V> valueMapper) {
-        BiFunction<T, Integer, K> keyGetterBi = (t, i) -> keyGetter.apply(t);
-        return toMapIdx(keyGetterBi, valueMapper);
-    }
-
-    public <K, V> Map<K, V> toMapIdx(BiFunction<T, Integer, K> keyGetter, BiFunction<T, Integer, V> valueMapper) {
-        Map<K, V> map = new LinkedHashMap<>();
-        forEachIdx((t, i) -> {
-            K k = keyGetter.apply(t, i);
-            if (k == null)
-                return;
-
-            V v = valueMapper.apply(t, i);
-            map.put(k, v);
-        });
 
         return map;
     }
