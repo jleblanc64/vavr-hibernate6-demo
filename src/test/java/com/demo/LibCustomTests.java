@@ -26,6 +26,14 @@ public class LibCustomTests {
         LibCustom.reset();
         assertEquals(0, A.f());
         assertEquals(3, B.g(3));
+
+        LibCustom.reset();
+        LibCustom.modifyArg(B.class, "g", 0, args -> {
+            var i = (int) args[0];
+            return i + 2;
+        });
+        LibCustom.load();
+        assertEquals(6, B.g(4));
     }
 
     static class A {
