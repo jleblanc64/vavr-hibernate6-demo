@@ -3,15 +3,12 @@ package com.demo.lib_override;
 import lombok.SneakyThrows;
 import net.bytebuddy.agent.ByteBuddyAgent;
 
-import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 
 import static com.demo.functional.Functor.ThrowingFunction;
 import static com.demo.functional.ListF.f;
 import static com.demo.lib_override.Internal.*;
 import static net.bytebuddy.agent.builder.AgentBuilder.RedefinitionStrategy.RETRANSFORMATION;
-import static org.reflections.ReflectionUtils.Methods;
-import static org.reflections.ReflectionUtils.get;
 
 public class LibCustom {
     public static void override(Class<?> clazz, String name, ThrowingFunction<Object[], Object> method) {
@@ -19,12 +16,7 @@ public class LibCustom {
     }
 
     public static void overrideWithSelf(Class<?> clazz, String name, ThrowingFunction<ArgsSelf, Object> method) {
-        var methods = f(get(Methods.of(clazz)));
-        var m = methods.findSafe(x -> x.getName().equals(name));
-        var isStatic = Modifier.isStatic(m.getModifiers());
-        if (isStatic)
-            throw new RuntimeException("WithSelf doesn't work for static methods");
-
+        checkNotStatic(clazz, name);
         methodsSelf.add(new MethodDescSelf(name, method, clazz));
     }
 
@@ -32,11 +24,12 @@ public class LibCustom {
         methodsExitArgs.add(new MethodDescExitArgs(name, method, clazz));
     }
 
-    public static void modifyArgs(Class<?> clazz, String name, int argIdx, ThrowingFunction<Object[], Object> method) {
+    public static void modifyArg(Class<?> clazz, String name, int argIdx, ThrowingFunction<Object[], Object> method) {
         methodsArgsMod.add(new MethodDescArgsMod(name, new MethodArgIdx(argIdx, method), clazz));
     }
 
-    public static void modifyArgsWithSelf(Class<?> clazz, String name, int argIdx, ThrowingFunction<ArgsSelf, Object> method) {
+    public static void modifyArgWithSelf(Class<?> clazz, String name, int argIdx, ThrowingFunction<ArgsSelf, Object> method) {
+        checkNotStatic(clazz, name);
         methodsArgsModSelf.add(new MethodDescArgsModSelf(name, new MethodArgIdxSelf(argIdx, method), clazz));
     }
 

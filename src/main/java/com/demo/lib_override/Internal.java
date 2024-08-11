@@ -10,17 +10,21 @@ import net.bytebuddy.description.NamedElement;
 import net.bytebuddy.matcher.ElementMatcher;
 
 import java.lang.instrument.Instrumentation;
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
 import static com.demo.functional.ListF.empty;
+import static com.demo.functional.ListF.f;
 import static net.bytebuddy.agent.builder.AgentBuilder.InitializationStrategy.NoOp.INSTANCE;
 import static net.bytebuddy.agent.builder.AgentBuilder.RedefinitionStrategy.RETRANSFORMATION;
 import static net.bytebuddy.agent.builder.AgentBuilder.TypeStrategy.Default.REDEFINE;
 import static net.bytebuddy.matcher.ElementMatchers.named;
 import static net.bytebuddy.matcher.ElementMatchers.none;
+import static org.reflections.ReflectionUtils.Methods;
+import static org.reflections.ReflectionUtils.get;
 
 public class Internal {
     public static Map<String, Function<Object[], Object>> nameToMethod;
@@ -51,6 +55,14 @@ public class Internal {
                 .installOnByteBuddyAgent();
 
         agents.add(agent);
+    }
+
+    static void checkNotStatic(Class<?> clazz, String name) {
+        var methods = f(get(Methods.of(clazz)));
+        var m = methods.findSafe(x -> x.getName().equals(name));
+        var isStatic = Modifier.isStatic(m.getModifiers());
+        if (isStatic)
+            throw new RuntimeException("WithSelf doesn't work for static methods");
     }
 
     interface MethodMeta {

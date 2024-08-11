@@ -16,7 +16,8 @@ import java.lang.reflect.Field;
 import static com.demo.functional.ListF.f;
 import static com.demo.functional.OptionF.o;
 import static com.demo.lib_override.FieldMocked.getRefl;
-import static com.demo.lib_override.LibCustom.*;
+import static com.demo.lib_override.LibCustom.modifyArgWithSelf;
+import static com.demo.lib_override.LibCustom.overrideWithSelf;
 
 public class Hibernate {
     public static void override() {
@@ -81,7 +82,7 @@ public class Hibernate {
     }
 
     public static void overrideListF() {
-        modifyArgsWithSelf(SetterFieldImpl.class, "set", 1, argsSelf -> {
+        modifyArgWithSelf(SetterFieldImpl.class, "set", 1, argsSelf -> {
             var args = argsSelf.args;
             var self = argsSelf.self;
             var field = (Field) getRefl(self, SetterFieldImpl.class.getDeclaredField("field"));
