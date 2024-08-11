@@ -1,6 +1,6 @@
 package com.demo.lib_override.ser;
 
-import com.demo.functional.IOptionF;
+import com.demo.functional.OptionF;
 import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.jsontype.TypeSerializer;
 import com.fasterxml.jackson.databind.ser.Serializers;
@@ -25,7 +25,7 @@ public class IOptionFSerializers extends Serializers.Base
                                                      ReferenceType refType, BeanDescription beanDesc,
                                                      TypeSerializer contentTypeSerializer, JsonSerializer<Object> contentValueSerializer) {
         final Class<?> raw = refType.getRawClass();
-        if (IOptionF.class.isAssignableFrom(raw)) {
+        if (OptionF.class.isAssignableFrom(raw)) {
             boolean staticTyping = (contentTypeSerializer == null)
                     && config.isEnabled(MapperFeature.USE_STATIC_TYPING);
             return new IOptionFSerializer(refType, staticTyping,

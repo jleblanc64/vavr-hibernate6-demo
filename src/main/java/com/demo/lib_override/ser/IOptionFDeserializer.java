@@ -1,6 +1,6 @@
 package com.demo.lib_override.ser;
 
-import com.demo.functional.IOptionF;
+import com.demo.functional.OptionF;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.JsonDeserializer;
@@ -12,7 +12,7 @@ import com.fasterxml.jackson.databind.jsontype.TypeDeserializer;
 import static com.demo.functional.OptionF.o;
 
 final class IOptionFDeserializer
-        extends ReferenceTypeDeserializer<IOptionF<?>> {
+        extends ReferenceTypeDeserializer<OptionF<?>> {
     private static final long serialVersionUID = 1L;
 
     /*
@@ -42,7 +42,7 @@ final class IOptionFDeserializer
     }
 
     @Override
-    public IOptionF<?> getNullValue(DeserializationContext ctxt) throws JsonMappingException {
+    public OptionF<?> getNullValue(DeserializationContext ctxt) throws JsonMappingException {
         // 07-May-2019, tatu: [databind#2303], needed for nested ReferenceTypes
         return o(_valueDeserializer.getNullValue(ctxt));
     }
@@ -56,23 +56,19 @@ final class IOptionFDeserializer
     }
 
     @Override
-    public IOptionF<?> referenceValue(Object contents) {
+    public OptionF<?> referenceValue(Object contents) {
         return o(contents);
     }
 
     @Override
-    public Object getReferenced(IOptionF<?> reference) {
+    public Object getReferenced(OptionF<?> reference) {
         // 23-Apr-2021, tatu: [modules-java8#214] Need to support empty
         //    for merging too
         return reference.orElse(null);
     }
 
     @Override // since 2.9
-    public IOptionF<?> updateReference(IOptionF<?> reference, Object contents) {
+    public OptionF<?> updateReference(OptionF<?> reference, Object contents) {
         return o(contents);
     }
-
-    // Default ought to be fine:
-//    public Boolean supportsUpdate(DeserializationConfig config) { }
-
 }

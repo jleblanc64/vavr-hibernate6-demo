@@ -1,7 +1,7 @@
 package com.demo.lib_override.sub;
 
-import com.demo.functional.IListF;
-import com.demo.functional.IOptionF;
+import com.demo.functional.ListF;
+import com.demo.functional.OptionF;
 import com.demo.lib_override.ValueWrapper;
 import org.hibernate.collection.spi.PersistentBag;
 import org.hibernate.mapping.BasicValue;
@@ -43,16 +43,16 @@ public class Hibernate {
             var v = args[0];
             var type = (Class<?>) args[1];
 
-            if (type == String.class && v instanceof IOptionF) {
+            if (type == String.class && v instanceof OptionF) {
 
-                var o = (IOptionF<?>) v;
+                var o = (OptionF<?>) v;
                 if (o.o().opt().isPresent())
                     return o.get();
 
                 return new ValueWrapper(null);
             }
 
-            if (type == IOptionF.class && !(v instanceof IOptionF))
+            if (type == OptionF.class && !(v instanceof OptionF))
                 return o(v);
 
             return v;
@@ -64,15 +64,15 @@ public class Hibernate {
             var v = args[0];
             var type = u.getJavaTypeClass();
 
-            if (type == String.class && v instanceof IOptionF) {
-                var o = (IOptionF<?>) v;
+            if (type == String.class && v instanceof OptionF) {
+                var o = (OptionF<?>) v;
                 if (o.o().opt().isPresent())
                     return o.get();
 
                 return new ValueWrapper(null);
             }
 
-            if (type == IOptionF.class && !(v instanceof IOptionF))
+            if (type == OptionF.class && !(v instanceof OptionF))
                 return o(v);
 
             return v;
@@ -85,7 +85,7 @@ public class Hibernate {
             var self = argsSelf.self;
             var field = (Field) getRefl(self, SetterFieldImpl.class.getDeclaredField("field"));
 
-            if (field.getType() == IListF.class) {
+            if (field.getType() == ListF.class) {
                 var bag = (PersistentBag) args[1];
                 return f(bag);
             }

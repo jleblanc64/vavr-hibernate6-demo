@@ -1,12 +1,10 @@
 package com.demo;
 
-import com.demo.functional.IListF;
-import com.demo.functional.IOptionF;
+import com.demo.functional.ListF;
+import com.demo.functional.OptionF;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-
-import static com.demo.functional.ListF.empty;
 
 @Getter
 @Setter
@@ -17,8 +15,8 @@ public class Customer {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private IOptionF<String> name;
+    private OptionF<String> name;
 
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
-    private IListF<Order> orders = empty();
+    private ListF<Order> orders;
 }

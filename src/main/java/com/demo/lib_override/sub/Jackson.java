@@ -1,7 +1,8 @@
 package com.demo.lib_override.sub;
 
 import com.demo.functional.IListF;
-import com.demo.functional.IOptionF;
+import com.demo.functional.ListF;
+import com.demo.functional.OptionF;
 import com.demo.lib_override.ser.IListFDeserializer;
 import com.demo.lib_override.ser.IOptionFModule;
 import com.fasterxml.jackson.databind.JavaType;
@@ -29,7 +30,7 @@ public class Jackson {
             om.registerModule(new Jdk8Module());
             om.registerModule(new IOptionFModule());
 
-            var simpleModule = new SimpleModule().addDeserializer(IListF.class, new IListFDeserializer());
+            var simpleModule = new SimpleModule().addDeserializer(ListF.class, new IListFDeserializer());
             om.registerModule(simpleModule);
 
             // init null values
@@ -37,9 +38,9 @@ public class Jackson {
             fields(deser).forEach(f -> {
                 var type = f.getType();
                 Object empty;
-                if (type == IOptionF.class)
+                if (type == OptionF.class)
                     empty = emptyO();
-                else if (type == IListF.class)
+                else if (type == ListF.class)
                     empty = empty();
                 else
                     return;

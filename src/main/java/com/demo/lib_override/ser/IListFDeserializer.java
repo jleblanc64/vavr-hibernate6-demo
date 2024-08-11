@@ -1,13 +1,14 @@
 package com.demo.lib_override.ser;
 
 import com.demo.functional.IListF;
+import com.demo.functional.ListF;
 import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.deser.std.StdDelegatingDeserializer;
 import com.fasterxml.jackson.databind.util.Converter;
 
 import java.util.Collection;
 
-public class IListFDeserializer extends StdDelegatingDeserializer<IListF> {
+public class IListFDeserializer extends StdDelegatingDeserializer<ListF> {
     public IListFDeserializer() {
         super(new IListFConverter());
     }
@@ -33,7 +34,7 @@ public class IListFDeserializer extends StdDelegatingDeserializer<IListF> {
     }
 
     @Override
-    protected StdDelegatingDeserializer<IListF> withDelegate(Converter<Object, IListF> converter, JavaType delegateType,
+    protected StdDelegatingDeserializer<ListF> withDelegate(Converter<Object, ListF> converter, JavaType delegateType,
                                                              JsonDeserializer<?> delegateDeserializer) {
         return new StdDelegatingDeserializer<>(converter, delegateType, delegateDeserializer);
     }

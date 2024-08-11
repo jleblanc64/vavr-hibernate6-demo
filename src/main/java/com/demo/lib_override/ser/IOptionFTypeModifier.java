@@ -1,6 +1,6 @@
 package com.demo.lib_override.ser;
 
-import com.demo.functional.IOptionF;
+import com.demo.functional.OptionF;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.type.ReferenceType;
 import com.fasterxml.jackson.databind.type.TypeBindings;
@@ -16,7 +16,7 @@ public class IOptionFTypeModifier extends TypeModifier
 
     @Override
     public JavaType modifyType(JavaType type, Type jdkType, TypeBindings bindings, TypeFactory typeFactory) {
-        if (type.getRawClass() == IOptionF.class)
+        if (type.getRawClass() == OptionF.class)
             return ReferenceType.upgradeFrom(type, type.containedTypeOrUnknown(0));
 
         return type;

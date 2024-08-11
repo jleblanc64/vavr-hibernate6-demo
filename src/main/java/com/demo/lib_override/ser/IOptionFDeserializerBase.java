@@ -1,6 +1,7 @@
 package com.demo.lib_override.ser;
 
 import com.demo.functional.IOptionF;
+import com.demo.functional.OptionF;
 import com.fasterxml.jackson.databind.BeanDescription;
 import com.fasterxml.jackson.databind.DeserializationConfig;
 import com.fasterxml.jackson.databind.JsonDeserializer;
@@ -18,7 +19,7 @@ public class IOptionFDeserializerBase
     public JsonDeserializer<?> findReferenceDeserializer(ReferenceType refType,
                                                          DeserializationConfig config, BeanDescription beanDesc,
                                                          TypeDeserializer contentTypeDeserializer, JsonDeserializer<?> contentDeserializer) {
-        if (refType.hasRawClass(IOptionF.class)) {
+        if (refType.hasRawClass(OptionF.class)) {
             return new IOptionFDeserializer(refType, null, contentTypeDeserializer, contentDeserializer);
         }
         return null;

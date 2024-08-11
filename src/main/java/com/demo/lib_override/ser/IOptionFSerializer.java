@@ -1,6 +1,6 @@
 package com.demo.lib_override.ser;
 
-import com.demo.functional.IOptionF;
+import com.demo.functional.OptionF;
 import com.fasterxml.jackson.databind.BeanProperty;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.jsontype.TypeSerializer;
@@ -9,7 +9,7 @@ import com.fasterxml.jackson.databind.type.ReferenceType;
 import com.fasterxml.jackson.databind.util.NameTransformer;
 
 public class IOptionFSerializer
-        extends ReferenceTypeSerializer<IOptionF<?>> // since 2.9
+        extends ReferenceTypeSerializer<OptionF<?>> // since 2.9
 {
     private static final long serialVersionUID = 1L;
 
@@ -32,16 +32,16 @@ public class IOptionFSerializer
     }
 
     @Override
-    protected ReferenceTypeSerializer<IOptionF<?>> withResolved(BeanProperty prop,
-                                                                TypeSerializer vts, JsonSerializer<?> valueSer,
-                                                                NameTransformer unwrapper) {
+    protected ReferenceTypeSerializer<OptionF<?>> withResolved(BeanProperty prop,
+                                                               TypeSerializer vts, JsonSerializer<?> valueSer,
+                                                               NameTransformer unwrapper) {
         return new IOptionFSerializer(this, prop, vts, valueSer, unwrapper,
                 _suppressableValue, _suppressNulls);
     }
 
     @Override
-    public ReferenceTypeSerializer<IOptionF<?>> withContentInclusion(Object suppressableValue,
-                                                                     boolean suppressNulls) {
+    public ReferenceTypeSerializer<OptionF<?>> withContentInclusion(Object suppressableValue,
+                                                                    boolean suppressNulls) {
         return new IOptionFSerializer(this, _property, _valueTypeSerializer,
                 _valueSerializer, _unwrapper,
                 suppressableValue, suppressNulls);
@@ -54,17 +54,17 @@ public class IOptionFSerializer
      */
 
     @Override
-    protected boolean _isValuePresent(IOptionF<?> value) {
+    protected boolean _isValuePresent(OptionF<?> value) {
         return value.get() != null;
     }
 
     @Override
-    protected Object _getReferenced(IOptionF<?> value) {
+    protected Object _getReferenced(OptionF<?> value) {
         return value.get();
     }
 
     @Override
-    protected Object _getReferencedIfPresent(IOptionF<?> value) {
+    protected Object _getReferencedIfPresent(OptionF<?> value) {
         return value.get();
     }
 }
