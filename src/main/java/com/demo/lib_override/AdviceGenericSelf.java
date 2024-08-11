@@ -5,8 +5,8 @@ import net.bytebuddy.asm.Advice;
 import java.lang.reflect.Method;
 
 import static com.demo.lib_override.AdviceGeneric.modArgs;
-import static com.demo.lib_override.OverrideLibs.nameToMethodArgsModSelf;
-import static com.demo.lib_override.OverrideLibs.nameToMethodSelf;
+import static com.demo.lib_override.LibCustom.nameToMethodArgsModSelf;
+import static com.demo.lib_override.LibCustom.nameToMethodSelf;
 import static net.bytebuddy.implementation.bytecode.assign.Assigner.Typing.DYNAMIC;
 
 public class AdviceGenericSelf {
@@ -17,11 +17,11 @@ public class AdviceGenericSelf {
 
         var f = nameToMethodSelf.get(name);
         if (f != null)
-            return f.apply(new OverrideLibs.ArgsSelf(args, self));
+            return f.apply(new LibCustom.ArgsSelf(args, self));
 
         var methodArgIdxSelf = nameToMethodArgsModSelf.get(name);
         if (methodArgIdxSelf != null) {
-            var argsMod = methodArgIdxSelf.method.apply(new OverrideLibs.ArgsSelf(args, self));
+            var argsMod = methodArgIdxSelf.method.apply(new LibCustom.ArgsSelf(args, self));
             if (argsMod != null)
                 args = modArgs(args, methodArgIdxSelf.argIdx, argsMod);
         }

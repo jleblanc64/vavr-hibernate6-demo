@@ -2,7 +2,7 @@ package com.demo.lib_override.sub;
 
 import com.demo.functional.ListF;
 import com.demo.functional.OptionF;
-import com.demo.lib_override.OverrideLibs;
+import com.demo.lib_override.LibCustom;
 import com.demo.lib_override.ValueWrapper;
 import org.hibernate.collection.spi.PersistentBag;
 import org.hibernate.mapping.BasicValue;
@@ -16,11 +16,11 @@ import java.lang.reflect.Field;
 import static com.demo.functional.ListF.f;
 import static com.demo.functional.OptionF.o;
 import static com.demo.lib_override.FieldMocked.getRefl;
-import static com.demo.lib_override.OverrideLibs.*;
+import static com.demo.lib_override.LibCustom.*;
 
 public class Hibernate {
     public static void override() {
-        OverrideLibs.override(UnknownBasicJavaType.class, "getRecommendedJdbcType", args -> {
+        LibCustom.override(UnknownBasicJavaType.class, "getRecommendedJdbcType", args -> {
             var ind = args[0];
             if (!(ind instanceof BasicValue))
                 return null;
@@ -80,7 +80,7 @@ public class Hibernate {
         });
     }
 
-    public static void overrideIListF() {
+    public static void overrideListF() {
         modifyArgsWithSelf(SetterFieldImpl.class, "set", 1, argsSelf -> {
             var args = argsSelf.args;
             var self = argsSelf.self;

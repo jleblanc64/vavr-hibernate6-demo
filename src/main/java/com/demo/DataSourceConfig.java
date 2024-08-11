@@ -1,6 +1,8 @@
 package com.demo;
 
-import com.demo.lib_override.OverrideLibs;
+import com.demo.lib_override.LibCustom;
+import com.demo.lib_override.sub.Hibernate;
+import com.demo.lib_override.sub.Jackson;
 import com.zaxxer.hikari.HikariDataSource;
 import org.flywaydb.core.Flyway;
 import org.springframework.beans.factory.annotation.Value;
@@ -22,7 +24,10 @@ public class DataSourceConfig {
 
     @Bean
     public DataSource getDataSource() {
-        OverrideLibs.override();
+        Hibernate.override();
+        Hibernate.overrideListF();
+        Jackson.override();
+        LibCustom.load();
 
         var ds = new HikariDataSource();
         ds.setJdbcUrl(url);
