@@ -44,7 +44,8 @@ public class LibCustom {
         nameToMethodSelf = methodsSelf.toMap(m -> m.name, m -> m.method);
         nameToMethodArgsModSelf = methodsArgsModSelf.toMap(m -> m.name, m -> m.method);
 
-        Internal.instru = ByteBuddyAgent.install();
+        if (instru == null)
+            instru = ByteBuddyAgent.install();
 
         var methodMetas = new ArrayList<MethodMeta>(methods);
         methodMetas.addAll(methodsExit);
