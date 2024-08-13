@@ -1,7 +1,5 @@
 package com.demo.lib_override.sub;
 
-import com.demo.functional.ListF;
-import com.demo.functional.OptionF;
 import com.demo.lib_override.ser.ListFDeserializer;
 import com.demo.lib_override.ser.OptionFModule;
 import com.fasterxml.jackson.databind.JavaType;
@@ -9,14 +7,16 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import io.github.jleblanc64.libcustom.LibCustom;
+import io.github.jleblanc64.libcustom.functional.ListF;
+import io.github.jleblanc64.libcustom.functional.OptionF;
 import org.springframework.http.HttpInputMessage;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.AbstractJackson2HttpMessageConverter;
 import org.springframework.util.StreamUtils;
 
-import static com.demo.functional.ListF.empty;
-import static com.demo.functional.OptionF.emptyO;
 import static io.github.jleblanc64.libcustom.FieldMocked.*;
+import static io.github.jleblanc64.libcustom.functional.ListF.empty;
+import static io.github.jleblanc64.libcustom.functional.OptionF.emptyO;
 
 public class Jackson {
     public static void override() {

@@ -1,9 +1,9 @@
 package com.demo.lib_override.ser;
 
-import com.demo.functional.ListF;
 import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.deser.std.StdDelegatingDeserializer;
 import com.fasterxml.jackson.databind.util.Converter;
+import io.github.jleblanc64.libcustom.functional.ListF;
 
 import java.util.Collection;
 
@@ -34,7 +34,7 @@ public class ListFDeserializer extends StdDelegatingDeserializer<ListF> {
 
     @Override
     protected StdDelegatingDeserializer<ListF> withDelegate(Converter<Object, ListF> converter, JavaType delegateType,
-                                                             JsonDeserializer<?> delegateDeserializer) {
+                                                            JsonDeserializer<?> delegateDeserializer) {
         return new StdDelegatingDeserializer<>(converter, delegateType, delegateDeserializer);
     }
 }

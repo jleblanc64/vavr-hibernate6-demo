@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-import static com.demo.functional.ListF.f;
+import static io.github.jleblanc64.libcustom.functional.ListF.f;
 
 @RestController
 @RequestMapping("/customers")

@@ -1,8 +1,8 @@
 package com.demo.lib_override.sub;
 
-import com.demo.functional.OptionF;
 import io.github.jleblanc64.libcustom.LibCustom;
 import io.github.jleblanc64.libcustom.ValueWrapper;
+import io.github.jleblanc64.libcustom.functional.OptionF;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import org.hibernate.mapping.BasicValue;
@@ -11,14 +11,16 @@ import org.hibernate.type.descriptor.java.spi.UnknownBasicJavaType;
 import org.hibernate.type.descriptor.jdbc.VarcharJdbcType;
 import org.reflections.Reflections;
 
-import static com.demo.functional.ListF.f;
-import static com.demo.functional.OptionF.o;
 import static io.github.jleblanc64.libcustom.LibCustom.overrideWithSelf;
+import static io.github.jleblanc64.libcustom.functional.ListF.f;
+import static io.github.jleblanc64.libcustom.functional.OptionF.o;
 
 public class HibernateOption {
     public static void override() {
+        var rootPackage = "com.demo";
         var optionClass = OptionF.class;
-        var tableToEntity = f(new Reflections("com.demo").getTypesAnnotatedWith(Entity.class))
+
+        var tableToEntity = f(new Reflections(rootPackage).getTypesAnnotatedWith(Entity.class))
                 .toMap(x -> x.getAnnotation(Table.class).name(), x -> x);
 
         LibCustom.override(UnknownBasicJavaType.class, "getRecommendedJdbcType", args -> {
@@ -48,9 +50,10 @@ public class HibernateOption {
             var v = args[0];
             var type = (Class<?>) args[1];
 
+            OptionF<?> o;
             if (type == String.class && instanceOf(v, optionClass)) {
 
-                var o = (OptionF<?>) v;
+                o = (OptionF<?>) v;
                 if (o.isPresent())
                     return o.get();
 

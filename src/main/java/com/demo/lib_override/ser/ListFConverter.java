@@ -1,13 +1,13 @@
 package com.demo.lib_override.ser;
 
-import com.demo.functional.ListF;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import com.fasterxml.jackson.databind.util.Converter;
+import io.github.jleblanc64.libcustom.functional.ListF;
 
 import java.util.Collection;
 
-import static com.demo.functional.ListF.f;
+import static io.github.jleblanc64.libcustom.functional.ListF.f;
 
 public class ListFConverter implements Converter<Collection, ListF> {
     @Override

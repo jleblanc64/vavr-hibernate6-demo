@@ -1,6 +1,5 @@
 package com.demo.lib_override.ser;
 
-import com.demo.functional.OptionF;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.JsonDeserializer;
@@ -8,8 +7,9 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.deser.ValueInstantiator;
 import com.fasterxml.jackson.databind.deser.std.ReferenceTypeDeserializer;
 import com.fasterxml.jackson.databind.jsontype.TypeDeserializer;
+import io.github.jleblanc64.libcustom.functional.OptionF;
 
-import static com.demo.functional.OptionF.o;
+import static io.github.jleblanc64.libcustom.functional.OptionF.o;
 
 final class OptionFDeserializer
         extends ReferenceTypeDeserializer<OptionF<?>> {

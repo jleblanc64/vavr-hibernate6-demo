@@ -1,14 +1,14 @@
 package com.demo.lib_override.sub;
 
-import com.demo.functional.ListF;
+import io.github.jleblanc64.libcustom.functional.ListF;
 import org.hibernate.collection.spi.PersistentBag;
 import org.hibernate.property.access.spi.SetterFieldImpl;
 
 import java.lang.reflect.Field;
 
-import static com.demo.functional.ListF.f;
 import static io.github.jleblanc64.libcustom.FieldMocked.getRefl;
 import static io.github.jleblanc64.libcustom.LibCustom.modifyArgWithSelf;
+import static io.github.jleblanc64.libcustom.functional.ListF.f;
 
 public class HibernateList {
     public static void override() {

@@ -1,6 +1,5 @@
 package com.demo.lib_override.ser;
 
-import com.demo.functional.OptionF;
 import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.jsontype.TypeSerializer;
 import com.fasterxml.jackson.databind.ser.Serializers;
@@ -10,6 +9,7 @@ import com.fasterxml.jackson.datatype.jdk8.DoubleStreamSerializer;
 import com.fasterxml.jackson.datatype.jdk8.IntStreamSerializer;
 import com.fasterxml.jackson.datatype.jdk8.LongStreamSerializer;
 import com.fasterxml.jackson.datatype.jdk8.StreamSerializer;
+import io.github.jleblanc64.libcustom.functional.OptionF;
 
 import java.util.stream.DoubleStream;
 import java.util.stream.IntStream;

@@ -1,7 +1,7 @@
 package com.demo;
 
-import com.demo.functional.ListF;
-import com.demo.functional.OptionF;
+import io.github.jleblanc64.libcustom.functional.ListF;
+import io.github.jleblanc64.libcustom.functional.OptionF;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;

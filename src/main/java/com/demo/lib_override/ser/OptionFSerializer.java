@@ -1,12 +1,12 @@
 package com.demo.lib_override.ser;
 
-import com.demo.functional.OptionF;
 import com.fasterxml.jackson.databind.BeanProperty;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.jsontype.TypeSerializer;
 import com.fasterxml.jackson.databind.ser.std.ReferenceTypeSerializer;
 import com.fasterxml.jackson.databind.type.ReferenceType;
 import com.fasterxml.jackson.databind.util.NameTransformer;
+import io.github.jleblanc64.libcustom.functional.OptionF;
 
 public class OptionFSerializer
         extends ReferenceTypeSerializer<OptionF<?>> // since 2.9
