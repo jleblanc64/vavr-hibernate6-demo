@@ -16,7 +16,7 @@ import org.springframework.util.StreamUtils;
 
 import static com.demo.functional.ListF.empty;
 import static com.demo.functional.OptionF.emptyO;
-import static com.demo.lib_override.FieldMocked.*;
+import static io.github.jleblanc64.libcustom.FieldMocked.*;
 
 public class Jackson {
     public static void override() {

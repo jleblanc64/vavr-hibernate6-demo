@@ -19,7 +19,7 @@ import java.util.Map;
 
 import static com.demo.functional.ListF.f;
 import static com.demo.functional.OptionF.o;
-import static com.demo.lib_override.FieldMocked.getRefl;
+import static io.github.jleblanc64.libcustom.FieldMocked.getRefl;
 import static io.github.jleblanc64.libcustom.LibCustom.modifyArgWithSelf;
 import static io.github.jleblanc64.libcustom.LibCustom.overrideWithSelf;
 
