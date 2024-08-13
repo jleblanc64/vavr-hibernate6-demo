@@ -11,12 +11,12 @@ import org.hibernate.type.descriptor.java.spi.UnknownBasicJavaType;
 import org.hibernate.type.descriptor.jdbc.VarcharJdbcType;
 import org.reflections.Reflections;
 
-import static io.github.jleblanc64.libcustom.LibCustom.overrideWithSelf;
 import static io.github.jleblanc64.libcustom.functional.ListF.f;
 import static io.github.jleblanc64.libcustom.functional.OptionF.o;
 
 public class HibernateOption {
     public static void override() {
+        // replace with your own values
         var rootPackage = "com.demo";
         var optionClass = OptionF.class;
 
@@ -45,7 +45,7 @@ public class HibernateOption {
             return null;
         });
 
-        overrideWithSelf(UnknownBasicJavaType.class, "unwrap", argsSelf -> {
+        LibCustom.overrideWithSelf(UnknownBasicJavaType.class, "unwrap", argsSelf -> {
             var args = argsSelf.args;
             var v = args[0];
             var type = (Class<?>) args[1];
@@ -67,7 +67,7 @@ public class HibernateOption {
             return v;
         });
 
-        overrideWithSelf(UnknownBasicJavaType.class, "wrap", argsSelf -> {
+        LibCustom.overrideWithSelf(UnknownBasicJavaType.class, "wrap", argsSelf -> {
             var args = argsSelf.args;
             var u = (UnknownBasicJavaType) argsSelf.self;
             var v = args[0];
