@@ -15,7 +15,6 @@ import org.hibernate.type.descriptor.jdbc.VarcharJdbcType;
 import org.reflections.Reflections;
 
 import java.lang.reflect.Field;
-import java.util.Map;
 
 import static com.demo.functional.ListF.f;
 import static com.demo.functional.OptionF.o;
@@ -24,10 +23,10 @@ import static io.github.jleblanc64.libcustom.LibCustom.modifyArgWithSelf;
 import static io.github.jleblanc64.libcustom.LibCustom.overrideWithSelf;
 
 public class Hibernate {
-    public static Map<String, Class<?>> tableToEntity = f(new Reflections("com.demo").getTypesAnnotatedWith(Entity.class))
-            .toMap(x -> x.getAnnotation(Table.class).name(), x -> x);
-
     public static void override() {
+        var tableToEntity = f(new Reflections("com.demo").getTypesAnnotatedWith(Entity.class))
+                .toMap(x -> x.getAnnotation(Table.class).name(), x -> x);
+
         LibCustom.override(UnknownBasicJavaType.class, "getRecommendedJdbcType", args -> {
             var ind = args[0];
             if (!(ind instanceof BasicValue))
