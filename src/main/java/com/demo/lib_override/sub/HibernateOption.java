@@ -61,6 +61,7 @@ public class HibernateOption {
             }
 
             if (type == optionClass && !instanceOf(v, optionClass))
+                // return Option from nullable value v
                 return o(v);
 
             return v;
@@ -81,6 +82,7 @@ public class HibernateOption {
             }
 
             if (type == optionClass && !instanceOf(v, optionClass))
+                // return Option from nullable value v
                 return o(v);
 
             return v;
