@@ -1,6 +1,7 @@
 package com.demo;
 
-import com.demo.lib_override.sub.Hibernate;
+import com.demo.lib_override.sub.HibernateList;
+import com.demo.lib_override.sub.HibernateOption;
 import com.demo.lib_override.sub.Jackson;
 import com.zaxxer.hikari.HikariDataSource;
 import io.github.jleblanc64.libcustom.LibCustom;
@@ -24,8 +25,8 @@ public class DataSourceConfig {
 
     @Bean
     public DataSource getDataSource() {
-        Hibernate.override();
-        Hibernate.overrideListF();
+        HibernateOption.override();
+        HibernateList.override();
         Jackson.override();
         LibCustom.load();
 

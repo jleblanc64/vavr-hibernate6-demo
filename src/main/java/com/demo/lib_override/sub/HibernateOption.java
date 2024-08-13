@@ -1,28 +1,21 @@
 package com.demo.lib_override.sub;
 
-import com.demo.functional.ListF;
 import com.demo.functional.OptionF;
 import io.github.jleblanc64.libcustom.LibCustom;
 import io.github.jleblanc64.libcustom.ValueWrapper;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
-import org.hibernate.collection.spi.PersistentBag;
 import org.hibernate.mapping.BasicValue;
 import org.hibernate.mapping.Column;
-import org.hibernate.property.access.spi.SetterFieldImpl;
 import org.hibernate.type.descriptor.java.spi.UnknownBasicJavaType;
 import org.hibernate.type.descriptor.jdbc.VarcharJdbcType;
 import org.reflections.Reflections;
 
-import java.lang.reflect.Field;
-
 import static com.demo.functional.ListF.f;
 import static com.demo.functional.OptionF.o;
-import static io.github.jleblanc64.libcustom.FieldMocked.getRefl;
-import static io.github.jleblanc64.libcustom.LibCustom.modifyArgWithSelf;
 import static io.github.jleblanc64.libcustom.LibCustom.overrideWithSelf;
 
-public class Hibernate {
+public class HibernateOption {
     public static void override() {
         var tableToEntity = f(new Reflections("com.demo").getTypesAnnotatedWith(Entity.class))
                 .toMap(x -> x.getAnnotation(Table.class).name(), x -> x);
@@ -87,21 +80,6 @@ public class Hibernate {
                 return o(v);
 
             return v;
-        });
-    }
-
-    public static void overrideListF() {
-        modifyArgWithSelf(SetterFieldImpl.class, "set", 1, argsSelf -> {
-            var args = argsSelf.args;
-            var self = argsSelf.self;
-            var field = (Field) getRefl(self, SetterFieldImpl.class.getDeclaredField("field"));
-
-            if (field.getType() == ListF.class) {
-                var bag = (PersistentBag) args[1];
-                return f(bag);
-            }
-
-            return null;
         });
     }
 }
