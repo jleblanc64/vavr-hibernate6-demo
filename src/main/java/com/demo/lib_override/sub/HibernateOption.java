@@ -17,6 +17,7 @@ import static io.github.jleblanc64.libcustom.LibCustom.overrideWithSelf;
 
 public class HibernateOption {
     public static void override() {
+        var optionClass = OptionF.class;
         var tableToEntity = f(new Reflections("com.demo").getTypesAnnotatedWith(Entity.class))
                 .toMap(x -> x.getAnnotation(Table.class).name(), x -> x);
 
@@ -36,7 +37,7 @@ public class HibernateOption {
             var entity = tableToEntity.get(b.getTable().getName());
             var fields = f(entity.getDeclaredFields());
             var field = fields.findSafe(x -> x.getName().equals(c.getName()));
-            if (field.getType() == OptionF.class)
+            if (field.getType() == optionClass)
                 return new VarcharJdbcType();
 
             return null;
@@ -47,7 +48,7 @@ public class HibernateOption {
             var v = args[0];
             var type = (Class<?>) args[1];
 
-            if (type == String.class && v instanceof OptionF) {
+            if (type == String.class && instanceOf(v, optionClass)) {
 
                 var o = (OptionF<?>) v;
                 if (o.isPresent())
@@ -56,7 +57,7 @@ public class HibernateOption {
                 return new ValueWrapper(null);
             }
 
-            if (type == OptionF.class && !(v instanceof OptionF))
+            if (type == optionClass && !instanceOf(v, optionClass))
                 return o(v);
 
             return v;
@@ -68,7 +69,7 @@ public class HibernateOption {
             var v = args[0];
             var type = u.getJavaTypeClass();
 
-            if (type == String.class && v instanceof OptionF) {
+            if (type == String.class && instanceOf(v, optionClass)) {
                 var o = (OptionF<?>) v;
                 if (o.isPresent())
                     return o.get();
@@ -76,10 +77,14 @@ public class HibernateOption {
                 return new ValueWrapper(null);
             }
 
-            if (type == OptionF.class && !(v instanceof OptionF))
+            if (type == optionClass && !instanceOf(v, optionClass))
                 return o(v);
 
             return v;
         });
+    }
+
+    static boolean instanceOf(Object o, Class<?> c) {
+        return o != null && o.getClass() == c;
     }
 }
