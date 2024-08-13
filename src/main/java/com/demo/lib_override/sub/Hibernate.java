@@ -4,14 +4,18 @@ import com.demo.functional.ListF;
 import com.demo.functional.OptionF;
 import io.github.jleblanc64.libcustom.LibCustom;
 import io.github.jleblanc64.libcustom.ValueWrapper;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 import org.hibernate.collection.spi.PersistentBag;
 import org.hibernate.mapping.BasicValue;
 import org.hibernate.mapping.Column;
 import org.hibernate.property.access.spi.SetterFieldImpl;
 import org.hibernate.type.descriptor.java.spi.UnknownBasicJavaType;
 import org.hibernate.type.descriptor.jdbc.VarcharJdbcType;
+import org.reflections.Reflections;
 
 import java.lang.reflect.Field;
+import java.util.Map;
 
 import static com.demo.functional.ListF.f;
 import static com.demo.functional.OptionF.o;
@@ -20,6 +24,9 @@ import static io.github.jleblanc64.libcustom.LibCustom.modifyArgWithSelf;
 import static io.github.jleblanc64.libcustom.LibCustom.overrideWithSelf;
 
 public class Hibernate {
+    public static Map<String, Class<?>> tableToEntity = f(new Reflections("com.demo").getTypesAnnotatedWith(Entity.class))
+            .toMap(x -> x.getAnnotation(Table.class).name(), x -> x);
+
     public static void override() {
         LibCustom.override(UnknownBasicJavaType.class, "getRecommendedJdbcType", args -> {
             var ind = args[0];
@@ -34,7 +41,10 @@ public class Hibernate {
 
             var c = (Column) s;
 
-            if ("customers".equals(b.getTable().getName()) && "name".equals(c.getName()))
+            var entity = tableToEntity.get(b.getTable().getName());
+            var fields = f(entity.getDeclaredFields());
+            var field = fields.findSafe(x -> x.getName().equals(c.getName()));
+            if (field.getType() == OptionF.class)
                 return new VarcharJdbcType();
 
             return null;
