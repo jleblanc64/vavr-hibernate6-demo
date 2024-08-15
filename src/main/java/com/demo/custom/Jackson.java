@@ -1,7 +1,7 @@
-package com.demo.lib_override.sub;
+package com.demo.custom;
 
-import com.demo.lib_override.ser.ListFDeserializer;
-import com.demo.lib_override.ser.OptionFModule;
+import com.demo.serializer.ListFDeserializer;
+import com.demo.serializer.OptionFModule;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;

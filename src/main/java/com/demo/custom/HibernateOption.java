@@ -1,4 +1,4 @@
-package com.demo.lib_override.sub;
+package com.demo.custom;
 
 import io.github.jleblanc64.libcustom.LibCustom;
 import io.github.jleblanc64.libcustom.ValueWrapper;

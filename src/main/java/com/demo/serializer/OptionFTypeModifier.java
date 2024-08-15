@@ -1,4 +1,4 @@
-package com.demo.lib_override.ser;
+package com.demo.serializer;
 
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.type.ReferenceType;

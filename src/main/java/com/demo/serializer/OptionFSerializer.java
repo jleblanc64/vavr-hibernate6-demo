@@ -1,4 +1,4 @@
-package com.demo.lib_override.ser;
+package com.demo.serializer;
 
 import com.fasterxml.jackson.databind.BeanProperty;
 import com.fasterxml.jackson.databind.JsonSerializer;

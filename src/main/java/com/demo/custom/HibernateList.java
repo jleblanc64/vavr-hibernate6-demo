@@ -1,4 +1,4 @@
-package com.demo.lib_override.sub;
+package com.demo.custom;
 
 import io.github.jleblanc64.libcustom.functional.ListF;
 import org.hibernate.collection.spi.PersistentBag;

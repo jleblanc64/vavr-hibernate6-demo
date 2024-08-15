@@ -1,8 +1,8 @@
 package com.demo;
 
-import com.demo.lib_override.sub.HibernateList;
-import com.demo.lib_override.sub.HibernateOption;
-import com.demo.lib_override.sub.Jackson;
+import com.demo.custom.HibernateList;
+import com.demo.custom.HibernateOption;
+import com.demo.custom.Jackson;
 import com.zaxxer.hikari.HikariDataSource;
 import io.github.jleblanc64.libcustom.LibCustom;
 import org.flywaydb.core.Flyway;
