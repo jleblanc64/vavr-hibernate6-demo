@@ -25,9 +25,10 @@ public class DataSourceConfig {
 
     @Bean
     public DataSource getDataSource() {
-        HibernateOption.override();
         HibernateList.override();
         Jackson.override();
+
+        HibernateOption.override();
         LibCustom.load();
 
         var ds = new HikariDataSource();
