@@ -1,5 +1,6 @@
 package com.demo.custom;
 
+import io.github.jleblanc64.libcustom.LibCustom;
 import io.github.jleblanc64.libcustom.functional.ListF;
 import org.hibernate.collection.spi.PersistentBag;
 import org.hibernate.property.access.spi.SetterFieldImpl;
@@ -17,12 +18,11 @@ public class HibernateList {
             var self = argsSelf.self;
             var field = (Field) getRefl(self, SetterFieldImpl.class.getDeclaredField("field"));
 
-            if (field.getType() == ListF.class) {
-                var bag = (PersistentBag) args[1];
-                return f(bag);
-            }
+            if (field.getType() != ListF.class)
+                return LibCustom.ORIGINAL;
 
-            return null;
+            var bag = (PersistentBag) args[1];
+            return f(bag);
         });
     }
 }

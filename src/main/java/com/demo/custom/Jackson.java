@@ -55,7 +55,7 @@ public class Jackson {
         // be tolerant, still try to deser if mediaType == null
         LibCustom.override(AbstractJackson2HttpMessageConverter.class, "canRead", args -> {
             if (args.length != 3)
-                return null;
+                return LibCustom.ORIGINAL;
 
             var mediaType = (MediaType) args[2];
             return mediaType == null || mediaType.toString().toLowerCase().contains("application/json");

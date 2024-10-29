@@ -4,6 +4,9 @@ Test class: `com.demo.ApplicationTests`
 
 ---
 
-Publish to maven central: https://central.sonatype.org/publish/publish-portal-maven/#publishing
+Publish to maven central:
 
-`mvn deploy`
+1 ) `mvn deploy`
+
+2 ) Click `publish`button on: 
+https://central.sonatype.com (sign in with Github)
