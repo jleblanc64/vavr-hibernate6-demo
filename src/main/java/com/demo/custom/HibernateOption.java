@@ -4,11 +4,15 @@ import io.github.jleblanc64.libcustom.LibCustom;
 import io.github.jleblanc64.libcustom.functional.OptionF;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
+import lombok.SneakyThrows;
 import org.hibernate.mapping.BasicValue;
 import org.hibernate.mapping.Column;
 import org.hibernate.type.descriptor.java.spi.UnknownBasicJavaType;
 import org.hibernate.type.descriptor.jdbc.VarcharJdbcType;
 import org.reflections.Reflections;
+
+import java.lang.reflect.Field;
+import java.util.regex.Pattern;
 
 import static io.github.jleblanc64.libcustom.functional.ListF.f;
 import static io.github.jleblanc64.libcustom.functional.OptionF.o;
@@ -41,7 +45,11 @@ public class HibernateOption {
             if (field.getType() != optionClass)
                 return LibCustom.ORIGINAL;
 
-            return new VarcharJdbcType();
+            var typeParam = typeParam(field);
+            if (typeParam == String.class)
+                return new VarcharJdbcType();
+
+            return LibCustom.ORIGINAL;
         });
 
         LibCustom.override(UnknownBasicJavaType.class, "unwrap", args -> {
@@ -89,5 +97,19 @@ public class HibernateOption {
 
     static boolean instanceOf(Object o, Class<?> c) {
         return o != null && o.getClass() == c;
+    }
+
+    @SneakyThrows
+    static Class<?> typeParam(Field field) {
+        var gen = field.getGenericType().getTypeName();
+        var pattern = "(?<=\\<).*(?=\\>)";
+        var subType = regex0(gen, pattern);
+        return Class.forName(subType);
+    }
+
+    static String regex0(String s, String pattern) {
+        var matcher = Pattern.compile(pattern).matcher(s);
+        matcher.find();
+        return matcher.group(0);
     }
 }
