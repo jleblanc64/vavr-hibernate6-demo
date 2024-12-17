@@ -8,6 +8,8 @@ import lombok.SneakyThrows;
 import org.hibernate.mapping.BasicValue;
 import org.hibernate.mapping.Column;
 import org.hibernate.type.descriptor.java.spi.UnknownBasicJavaType;
+import org.hibernate.type.descriptor.jdbc.IntegerJdbcType;
+import org.hibernate.type.descriptor.jdbc.NumericJdbcType;
 import org.hibernate.type.descriptor.jdbc.VarcharJdbcType;
 import org.reflections.Reflections;
 
@@ -48,6 +50,8 @@ public class HibernateOption {
             var typeParam = typeParam(field);
             if (typeParam == String.class)
                 return new VarcharJdbcType();
+            else if (typeParam == Integer.class)
+                return new IntegerJdbcType();
 
             return LibCustom.ORIGINAL;
         });
@@ -57,13 +61,13 @@ public class HibernateOption {
             var type = (Class<?>) args[1];
 
             OptionF<?> o;
-            if (type == String.class && instanceOf(v, optionClass)) {
+            if (instanceOf(v, optionClass)) {
 
                 o = (OptionF<?>) v;
                 if (o.isPresent())
                     return o.get();
 
-                return null;
+                return type == Integer.class ? 0 : null;
             }
 
             if (type == optionClass && !instanceOf(v, optionClass))
@@ -79,7 +83,7 @@ public class HibernateOption {
             var v = args[0];
             var type = u.getJavaTypeClass();
 
-            if (type == String.class && instanceOf(v, optionClass)) {
+            if (instanceOf(v, optionClass)) {
                 var o = (OptionF<?>) v;
                 if (o.isPresent())
                     return o.get();

@@ -46,7 +46,7 @@ public class ApplicationTests {
         // POST customer
         var hdrs = new HttpHeaders();
         hdrs.setContentType(MediaType.APPLICATION_JSON);
-        var req = new HttpEntity<>("{\"name\":\"a\"}", hdrs);
+        var req = new HttpEntity<>("{\"name\":\"a\",\"number\":3}", hdrs);
         var resp = cli.postForObject(url, req, String.class);
 
         // extract ID from created customer
@@ -59,6 +59,9 @@ public class ApplicationTests {
         root = om.readTree(resp);
         var name = root.path("name").textValue();
         assertThat(name).isEqualTo("a");
+
+        var number = root.path("number").intValue();
+        assertThat(number).isEqualTo(3);
 
         // LIST
         resp = cli.getForObject(url, String.class);
