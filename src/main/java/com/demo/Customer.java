@@ -19,6 +19,8 @@ public class Customer {
 
     private OptionF<Integer> number;
 
+    private Integer i;
+
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
     private ListF<Order> orders;
 }

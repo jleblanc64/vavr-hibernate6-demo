@@ -7,13 +7,18 @@ import jakarta.persistence.Table;
 import lombok.SneakyThrows;
 import org.hibernate.mapping.BasicValue;
 import org.hibernate.mapping.Column;
+import org.hibernate.type.descriptor.WrapperOptions;
+import org.hibernate.type.descriptor.java.JavaType;
 import org.hibernate.type.descriptor.java.spi.UnknownBasicJavaType;
+import org.hibernate.type.descriptor.jdbc.BasicBinder;
 import org.hibernate.type.descriptor.jdbc.IntegerJdbcType;
-import org.hibernate.type.descriptor.jdbc.NumericJdbcType;
 import org.hibernate.type.descriptor.jdbc.VarcharJdbcType;
 import org.reflections.Reflections;
 
 import java.lang.reflect.Field;
+import java.sql.CallableStatement;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.regex.Pattern;
 
 import static io.github.jleblanc64.libcustom.functional.ListF.f;
@@ -67,7 +72,7 @@ public class HibernateOption {
                 if (o.isPresent())
                     return o.get();
 
-                return type == Integer.class ? 0 : null;
+                return null;
             }
 
             if (type == optionClass && !instanceOf(v, optionClass))
@@ -96,6 +101,35 @@ public class HibernateOption {
                 return o(v);
 
             return v;
+        });
+
+        // https://github.com/hibernate/hibernate-orm/blob/4fc56653a6a6de631012e9ae43f8e6a8c52ea2d7/hibernate-core/src/main/java/org/hibernate/type/descriptor/jdbc/IntegerJdbcType.java#L65-L78
+        LibCustom.overrideWithSelf(IntegerJdbcType.class, "getBinder", argSelf -> {
+            var arg = (JavaType) argSelf.args[0];
+            if (arg.getJavaTypeClass() != OptionF.class)
+                return LibCustom.ORIGINAL;
+
+            var javaType = (JavaType<OptionF<Integer>>) arg;
+            var self = (IntegerJdbcType) argSelf.self;
+
+            return new BasicBinder<>(javaType, self) {
+                @Override
+                protected void doBind(PreparedStatement st, OptionF<Integer> value, int index, WrapperOptions options) throws SQLException {
+                    if (value == null || !value.isPresent())
+                        st.setObject(index, null);
+                    else
+                        st.setInt(index, javaType.unwrap(value, Integer.class, options));
+                }
+
+                @Override
+                protected void doBind(CallableStatement st, OptionF<Integer> value, String name, WrapperOptions options)
+                        throws SQLException {
+                    if (value == null || !value.isPresent())
+                        st.setObject(name, null);
+                    else
+                        st.setInt(name, javaType.unwrap(value, Integer.class, options));
+                }
+            };
         });
     }
 

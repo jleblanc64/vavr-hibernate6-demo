@@ -18,6 +18,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Testcontainers
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -46,7 +47,7 @@ public class ApplicationTests {
         // POST customer
         var hdrs = new HttpHeaders();
         hdrs.setContentType(MediaType.APPLICATION_JSON);
-        var req = new HttpEntity<>("{\"name\":\"a\",\"number\":3}", hdrs);
+        var req = new HttpEntity<>("{\"name\":\"a\",\"number\":3,\"i\":4}", hdrs);
         var resp = cli.postForObject(url, req, String.class);
 
         // extract ID from created customer
@@ -56,19 +57,17 @@ public class ApplicationTests {
 
         // GET by ID
         resp = cli.getForObject(url + "/" + id, String.class);
-        root = om.readTree(resp);
-        var name = root.path("name").textValue();
-        assertThat(name).isEqualTo("a");
-
-        var number = root.path("number").intValue();
-        assertThat(number).isEqualTo(3);
+        var respJ = new JSONObject(resp);
+        assertEquals("a", respJ.get("name"));
+        assertEquals(3, respJ.get("number"));
+        assertEquals(4, respJ.get("i"));
 
         // LIST
         resp = cli.getForObject(url, String.class);
         root = om.readTree(resp);
         assertThat(root.size()).isEqualTo(1);
 
-        name = root.path(0).path("name").textValue();
+        var name = root.path(0).path("name").textValue();
         assertThat(name).isEqualTo("a");
 
         // DELETE
@@ -94,6 +93,10 @@ public class ApplicationTests {
         // orders
         req = new HttpEntity<>("{\"name\":\"a\",\"orders\":[{\"description\":\"d\"},{\"description\":\"d2\"}]}", hdrs);
         resp = cli.postForObject(url, req, String.class);
-        assertEquals(2, new JSONObject(resp).getJSONArray("orders").length());
+
+        respJ = new JSONObject(resp);
+        assertEquals(2, respJ.getJSONArray("orders").length());
+        assertEquals(-10, respJ.getInt("number"));
+        assertTrue(respJ.isNull("i"));
     }
 }
