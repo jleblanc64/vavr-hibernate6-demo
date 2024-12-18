@@ -3,6 +3,7 @@ package com.demo.custom;
 import io.github.jleblanc64.libcustom.LibCustom;
 import io.github.jleblanc64.libcustom.functional.ListF;
 import io.github.jleblanc64.libcustom.functional.OptionF;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.AbstractJackson2HttpMessageConverter;
 
@@ -36,13 +37,13 @@ public class Jackson {
             return returned;
         });
 
-        // be tolerant, still try to deser if mediaType == null
-        LibCustom.override(AbstractJackson2HttpMessageConverter.class, "canRead", args -> {
-            if (args.length != 3)
-                return LibCustom.ORIGINAL;
+        // accept text/plain content-type as json
+        LibCustom.modifyReturn(HttpHeaders.class, "getContentType", argsR -> {
+            var mediaType = argsR.returned;
+            if (mediaType != null && mediaType.toString().toLowerCase().startsWith("text/plain"))
+                return MediaType.parseMediaType("application/json");
 
-            var mediaType = (MediaType) args[2];
-            return mediaType == null || mediaType.toString().toLowerCase().contains("application/json");
+            return mediaType;
         });
     }
 }
