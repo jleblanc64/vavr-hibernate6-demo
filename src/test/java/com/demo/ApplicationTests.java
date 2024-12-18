@@ -60,6 +60,7 @@ public class ApplicationTests {
         var respJ = new JSONObject(resp);
         assertEquals("a", respJ.get("name"));
         assertEquals(3, respJ.get("number"));
+        assertEquals(3, respJ.get("numberOpt"));
         assertEquals(4, respJ.get("i"));
 
         // LIST
@@ -97,6 +98,7 @@ public class ApplicationTests {
         respJ = new JSONObject(resp);
         assertEquals(2, respJ.getJSONArray("orders").length());
         assertEquals(-10, respJ.getInt("number"));
+        assertTrue(respJ.isNull("numberOpt"));
         assertTrue(respJ.isNull("i"));
     }
 }
