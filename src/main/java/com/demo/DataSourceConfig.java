@@ -12,6 +12,8 @@ import org.springframework.context.annotation.Configuration;
 
 import javax.sql.DataSource;
 
+import static io.github.jleblanc64.libcustom.functional.Functor.print;
+
 @Configuration
 public class DataSourceConfig {
     @Value("${spring.datasource.url}")

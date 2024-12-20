@@ -3,16 +3,16 @@ package com.demo.serializer;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import com.fasterxml.jackson.databind.util.Converter;
-import io.github.jleblanc64.libcustom.functional.ListF;
+import io.vavr.collection.List;
 
 import java.util.Collection;
 
 import static io.github.jleblanc64.libcustom.functional.ListF.f;
 
-public class ListFConverter implements Converter<Collection, ListF> {
+public class VavrListConverter implements Converter<Collection, List> {
     @Override
-    public ListF convert(Collection value) {
-        return f(value);
+    public List convert(Collection value) {
+        return List.ofAll(value);
     }
 
     @Override
@@ -22,6 +22,6 @@ public class ListFConverter implements Converter<Collection, ListF> {
 
     @Override
     public JavaType getOutputType(TypeFactory typeFactory) {
-        return typeFactory.constructCollectionLikeType(ListF.class, Object.class);
+        return typeFactory.constructCollectionLikeType(List.class, Object.class);
     }
 }

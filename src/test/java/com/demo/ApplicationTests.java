@@ -14,6 +14,9 @@ import org.testcontainers.containers.MySQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -56,6 +59,9 @@ public class ApplicationTests {
         assertEquals(3, respJ.get("numberOpt"));
         assertEquals(4, respJ.get("i"));
 
+        var orders = respJ.getJSONArray("orders");
+        assertEquals(0, orders.length());
+
         // LIST
         resp = cli.getForObject(url, String.class);
         var respJa = new JSONArray(resp);
@@ -88,9 +94,15 @@ public class ApplicationTests {
         resp = cli.postForObject(url, req, String.class);
 
         respJ = new JSONObject(resp);
-        assertEquals(2, respJ.getJSONArray("orders").length());
         assertEquals(-10, respJ.getInt("number"));
         assertTrue(respJ.isNull("numberOpt"));
         assertTrue(respJ.isNull("i"));
+
+        orders = respJ.getJSONArray("orders");
+        var descriptions = new HashSet<>();
+        for (var i = 0; i < orders.length(); i++)
+            descriptions.add(orders.getJSONObject(i).get("description"));
+
+        assertEquals(Set.of("d", "d2"), descriptions);
     }
 }

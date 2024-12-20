@@ -1,7 +1,7 @@
 package com.demo;
 
-import io.github.jleblanc64.libcustom.functional.ListF;
 import io.github.jleblanc64.libcustom.functional.OptionF;
+import io.vavr.collection.List;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -22,5 +22,5 @@ public class Customer {
     private Integer i;
 
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
-    private ListF<Order> orders;
+    private List<Order> orders;
 }

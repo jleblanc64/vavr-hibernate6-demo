@@ -139,9 +139,13 @@ public class HibernateOption {
 
     @SneakyThrows
     static Class<?> typeParam(Field field) {
-        var gen = field.getGenericType().getTypeName();
+        var name = field.getGenericType().getTypeName();
+        return typeParam(name);
+    }
+
+    public static Class<?> typeParam(String name) throws ClassNotFoundException {
         var pattern = "(?<=\\<).*(?=\\>)";
-        var subType = regex0(gen, pattern);
+        var subType = regex0(name, pattern);
         return Class.forName(subType);
     }
 

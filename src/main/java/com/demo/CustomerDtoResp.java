@@ -1,11 +1,10 @@
 package com.demo;
 
 import io.github.jleblanc64.libcustom.functional.OptionF;
+import io.vavr.collection.List;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.util.List;
 
 @Getter
 @Setter

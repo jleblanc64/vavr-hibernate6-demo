@@ -3,13 +3,13 @@ package com.demo.serializer;
 import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.deser.std.StdDelegatingDeserializer;
 import com.fasterxml.jackson.databind.util.Converter;
-import io.github.jleblanc64.libcustom.functional.ListF;
+import io.vavr.collection.List;
 
 import java.util.Collection;
 
-public class ListFDeserializer extends StdDelegatingDeserializer<ListF> {
-    public ListFDeserializer() {
-        super(new ListFConverter());
+public class VavrListDeserializer extends StdDelegatingDeserializer<List> {
+    public VavrListDeserializer() {
+        super(new VavrListConverter());
     }
 
     @Override
@@ -33,7 +33,7 @@ public class ListFDeserializer extends StdDelegatingDeserializer<ListF> {
     }
 
     @Override
-    protected StdDelegatingDeserializer<ListF> withDelegate(Converter<Object, ListF> converter, JavaType delegateType,
+    protected StdDelegatingDeserializer<List> withDelegate(Converter<Object, List> converter, JavaType delegateType,
                                                             JsonDeserializer<?> delegateDeserializer) {
         return new StdDelegatingDeserializer<>(converter, delegateType, delegateDeserializer);
     }

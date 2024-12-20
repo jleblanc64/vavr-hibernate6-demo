@@ -1,14 +1,13 @@
 package com.demo.custom;
 
 import io.github.jleblanc64.libcustom.LibCustom;
-import io.github.jleblanc64.libcustom.functional.ListF;
 import io.github.jleblanc64.libcustom.functional.OptionF;
+import io.vavr.collection.List;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.AbstractJackson2HttpMessageConverter;
 
 import static io.github.jleblanc64.libcustom.FieldMocked.*;
-import static io.github.jleblanc64.libcustom.functional.ListF.empty;
 import static io.github.jleblanc64.libcustom.functional.OptionF.emptyO;
 
 public class Jackson {
@@ -24,8 +23,8 @@ public class Jackson {
                 Object empty;
                 if (type == OptionF.class)
                     empty = emptyO();
-                else if (type == ListF.class)
-                    empty = empty();
+                else if (type == List.class)
+                    empty = List.empty();
                 else
                     return;
 

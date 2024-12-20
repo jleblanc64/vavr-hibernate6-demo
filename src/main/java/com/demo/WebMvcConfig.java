@@ -1,7 +1,10 @@
 package com.demo;
 
+import com.demo.serializer.VavrListDeserializer;
+import com.demo.serializer.VavrListSerializer;
 import com.demo.serializer.OptionFModule;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.module.SimpleModule;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.HttpMessageConverter;
@@ -20,7 +23,13 @@ public class WebMvcConfig implements WebMvcConfigurer {
 
     @Override
     public void extendMessageConverters(List<HttpMessageConverter<?>> converters) {
+        var ser = om.getSerializerProviderInstance();
         om.registerModule(new OptionFModule());
+
+        var simpleModule = new SimpleModule()
+                .addDeserializer(io.vavr.collection.List.class, new VavrListDeserializer())
+                .addSerializer(io.vavr.collection.List.class, new VavrListSerializer(ser));
+        om.registerModule(simpleModule);
 
         converters.stream().filter(c -> c instanceof MappingJackson2HttpMessageConverter)
                 .map(c -> (MappingJackson2HttpMessageConverter) c)
