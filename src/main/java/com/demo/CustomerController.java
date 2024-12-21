@@ -1,6 +1,7 @@
 package com.demo;
 
 import io.vavr.collection.List;
+import io.vavr.control.Option;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -13,9 +14,9 @@ public class CustomerController {
     CustomerRepository customerRepository;
 
     @GetMapping
-    public List<CustomerDtoResp> getCustomers(@RequestParam(required = false) String city) {
-        if (city != null)
-            return customerRepository.findAllByCity(city).map(CustomerDtoResp::new);
+    public List<CustomerDtoResp> getCustomers(@RequestParam(required = false) Option<String> city) {
+        if (city.isDefined())
+            return customerRepository.findAllByCity(city.get()).map(CustomerDtoResp::new);
 
         return customerRepository.findAllF().map(CustomerDtoResp::new);
     }
