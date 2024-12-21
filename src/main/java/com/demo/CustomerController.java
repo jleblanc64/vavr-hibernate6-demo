@@ -21,20 +21,20 @@ public class CustomerController {
 
     @PostMapping
     public CustomerDtoResp createCustomer(@RequestBody CustomerDtoReqSub customer) {
-        var c = customerRepository.save(customer.toEntity());
-        return new CustomerDtoResp(c);
+        var cust = customerRepository.save(customer.toEntity());
+        return new CustomerDtoResp(cust);
     }
 
     @GetMapping("/{id}")
     public CustomerDtoResp getCustomerById(@PathVariable(value = "id") Long customerId) {
-        var c = customerRepository.findById(customerId).orElseThrow(NotFoundException::new);
-        return new CustomerDtoResp(c);
+        var cust = customerRepository.findByIdF(customerId).getOrElseThrow(NotFoundException::new);
+        return new CustomerDtoResp(cust);
     }
 
     @DeleteMapping("/{id}")
     public void deleteCustomer(@PathVariable(value = "id") Long customerId) {
-        Customer customer = customerRepository.findById(customerId).orElseThrow(NotFoundException::new);
-        customerRepository.delete(customer);
+        var cust = customerRepository.findByIdF(customerId).getOrElseThrow(NotFoundException::new);
+        customerRepository.delete(cust);
     }
 
     @ResponseStatus(value = HttpStatus.NOT_FOUND)
