@@ -1,12 +1,9 @@
 package com.demo;
 
+import io.vavr.collection.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
-
-import static io.github.jleblanc64.libcustom.functional.ListF.f;
 
 @RestController
 @RequestMapping("/customers")
@@ -18,9 +15,9 @@ public class CustomerController {
     @GetMapping
     public List<CustomerDtoResp> getCustomers(@RequestParam(required = false) String city) {
         if (city != null)
-            return customerRepository.findAllByCity(city).map(CustomerDtoResp::new).toJavaList();
+            return customerRepository.findAllByCity(city).map(CustomerDtoResp::new);
 
-        return f(customerRepository.findAll()).map(CustomerDtoResp::new);
+        return customerRepository.findAllF().map(CustomerDtoResp::new);
     }
 
     @PostMapping
