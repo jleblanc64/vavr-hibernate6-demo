@@ -18,7 +18,7 @@ public class CustomerController {
     @GetMapping
     public List<CustomerDtoResp> getCustomers(@RequestParam(required = false) String city) {
         if (city != null)
-            return f(customerRepository.findAllByCity(city)).map(CustomerDtoResp::new);
+            return customerRepository.findAllByCity(city).map(CustomerDtoResp::new).toJavaList();
 
         return f(customerRepository.findAll()).map(CustomerDtoResp::new);
     }
