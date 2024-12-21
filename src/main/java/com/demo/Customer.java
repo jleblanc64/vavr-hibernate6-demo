@@ -19,6 +19,8 @@ public class Customer {
 
     private Option<Integer> number;
 
+    private String city;
+
     private Integer i;
 
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)

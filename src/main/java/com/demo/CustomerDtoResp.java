@@ -15,6 +15,7 @@ public class CustomerDtoResp {
     private int number;
     private Option<Integer> numberOpt;
     private Integer i;
+    private String city;
     private List<OrderDto> orders;
 
     public CustomerDtoResp(Customer c) {
@@ -23,6 +24,7 @@ public class CustomerDtoResp {
         number = c.getNumber().getOrElse(-10);
         numberOpt = c.getNumber();
         i = c.getI();
+        city = c.getCity();
         orders = c.getOrders().map(OrderDto::new);
     }
 }

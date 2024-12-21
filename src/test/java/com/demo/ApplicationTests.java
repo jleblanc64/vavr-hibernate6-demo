@@ -104,5 +104,26 @@ public class ApplicationTests {
             descriptions.add(orders.getJSONObject(i).get("description"));
 
         assertEquals(Set.of("d", "d2"), descriptions);
+
+        // POST customers with city
+        req = new HttpEntity<>("{\"city\":\"a\"}");
+        cli.postForObject(url, req, String.class);
+
+        req = new HttpEntity<>("{\"city\":\"a\"}");
+        cli.postForObject(url, req, String.class);
+
+        req = new HttpEntity<>("{\"city\":\"b\"}");
+        cli.postForObject(url, req, String.class);
+
+        // list all customers
+        resp = cli.getForObject(url, String.class);
+        respJa = new JSONArray(resp);
+        assertEquals(5, respJa.length());
+
+        // list customers with city a
+        resp = cli.getForObject(url + "?city=a", String.class);
+        respJa = new JSONArray(resp);
+        assertEquals(2, respJa.length());
+        assertEquals("a", respJa.getJSONObject(0).get("city"));
     }
 }

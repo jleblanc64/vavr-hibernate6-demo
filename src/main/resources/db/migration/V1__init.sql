@@ -2,7 +2,8 @@ create table customers (
  id int primary key NOT NULL auto_increment,
  name VARCHAR(255),
  number int,
- i int
+ i int,
+ city VARCHAR(255)
 );
 
 create table orders (

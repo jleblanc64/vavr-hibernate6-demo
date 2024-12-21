@@ -14,6 +14,7 @@ public class CustomerDtoReq {
     private Option<String> name;
     private Option<Integer> number;
     private Integer i;
+    private String city;
     private List<OrderDto> orders;
 
     public Customer toEntity() {
@@ -21,6 +22,7 @@ public class CustomerDtoReq {
         c.setName(name);
         c.setNumber(number);
         c.setI(i);
+        c.setCity(city);
         c.setOrders(orders.map(x -> x.toOrder(c)));
         return c;
     }
