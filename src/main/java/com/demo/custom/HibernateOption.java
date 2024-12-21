@@ -25,10 +25,11 @@ import static io.github.jleblanc64.libcustom.functional.ListF.f;
 import static io.github.jleblanc64.libcustom.functional.OptionF.o;
 
 public class HibernateOption {
+    public static Class<?> class_ = Option.class;
+
     public static void override() {
         // replace with your own values
         var rootPackage = "com.demo";
-        var optionClass = Option.class;
 
         var tableToEntity = f(new Reflections(rootPackage).getTypesAnnotatedWith(Entity.class))
                 .toMap(x -> x.getAnnotation(Table.class).name(), x -> x);
@@ -49,7 +50,7 @@ public class HibernateOption {
             var entity = tableToEntity.get(b.getTable().getName());
             var fields = f(entity.getDeclaredFields());
             var field = fields.findSafe(x -> x.getName().equals(c.getName()));
-            if (field.getType() != optionClass)
+            if (field.getType() != class_)
                 return LibCustom.ORIGINAL;
 
             var typeParam = typeParam(field);
@@ -66,7 +67,7 @@ public class HibernateOption {
             var type = (Class<?>) args[1];
 
             Option<?> o;
-            if (instanceOf(v, optionClass)) {
+            if (instanceOf(v, class_)) {
 
                 o = (Option<?>) v;
                 if (o.isDefined())
@@ -75,7 +76,7 @@ public class HibernateOption {
                 return null;
             }
 
-            if (type == optionClass && !instanceOf(v, optionClass))
+            if (type == class_ && !instanceOf(v, class_))
                 // return Option from nullable value v
                 return o(v);
 
@@ -88,7 +89,7 @@ public class HibernateOption {
             var v = args[0];
             var type = u.getJavaTypeClass();
 
-            if (instanceOf(v, optionClass)) {
+            if (instanceOf(v, class_)) {
                 var o = (Option<?>) v;
                 if (o.isDefined())
                     return o.get();
@@ -96,7 +97,7 @@ public class HibernateOption {
                 return null;
             }
 
-            if (type == optionClass && !instanceOf(v, optionClass))
+            if (type == class_ && !instanceOf(v, class_))
                 // return Option from nullable value v
                 return o(v);
 
