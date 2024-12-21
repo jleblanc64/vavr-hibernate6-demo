@@ -15,10 +15,8 @@ public class CustomerController {
 
     @GetMapping
     public List<CustomerDtoResp> getCustomers(@RequestParam(required = false) Option<String> city) {
-        if (city.isDefined())
-            return customerRepository.findAllByCity(city.get()).map(CustomerDtoResp::new);
-
-        return customerRepository.findAllF().map(CustomerDtoResp::new);
+        var customers = city.fold(customerRepository::findAllF, customerRepository::findAllByCity);
+        return customers.map(CustomerDtoResp::new);
     }
 
     @PostMapping
