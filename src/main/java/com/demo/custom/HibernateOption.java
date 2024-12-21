@@ -1,7 +1,7 @@
 package com.demo.custom;
 
 import io.github.jleblanc64.libcustom.LibCustom;
-import io.github.jleblanc64.libcustom.functional.OptionF;
+import io.vavr.control.Option;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import lombok.SneakyThrows;
@@ -28,7 +28,7 @@ public class HibernateOption {
     public static void override() {
         // replace with your own values
         var rootPackage = "com.demo";
-        var optionClass = OptionF.class;
+        var optionClass = Option.class;
 
         var tableToEntity = f(new Reflections(rootPackage).getTypesAnnotatedWith(Entity.class))
                 .toMap(x -> x.getAnnotation(Table.class).name(), x -> x);
@@ -65,11 +65,11 @@ public class HibernateOption {
             var v = args[0];
             var type = (Class<?>) args[1];
 
-            OptionF<?> o;
+            Option<?> o;
             if (instanceOf(v, optionClass)) {
 
-                o = (OptionF<?>) v;
-                if (o.isPresent())
+                o = (Option<?>) v;
+                if (o.isDefined())
                     return o.get();
 
                 return null;
@@ -89,8 +89,8 @@ public class HibernateOption {
             var type = u.getJavaTypeClass();
 
             if (instanceOf(v, optionClass)) {
-                var o = (OptionF<?>) v;
-                if (o.isPresent())
+                var o = (Option<?>) v;
+                if (o.isDefined())
                     return o.get();
 
                 return null;
@@ -106,30 +106,41 @@ public class HibernateOption {
         // https://github.com/hibernate/hibernate-orm/blob/4fc56653a6a6de631012e9ae43f8e6a8c52ea2d7/hibernate-core/src/main/java/org/hibernate/type/descriptor/jdbc/IntegerJdbcType.java#L65-L78
         LibCustom.overrideWithSelf(IntegerJdbcType.class, "getBinder", argSelf -> {
             var arg = (JavaType) argSelf.args[0];
-            if (arg.getJavaTypeClass() != OptionF.class)
+            if (arg.getJavaTypeClass() != Option.class)
                 return LibCustom.ORIGINAL;
 
-            var javaType = (JavaType<OptionF<Integer>>) arg;
+            var javaType = (JavaType<Option<Integer>>) arg;
             var self = (IntegerJdbcType) argSelf.self;
 
             return new BasicBinder<>(javaType, self) {
                 @Override
-                protected void doBind(PreparedStatement st, OptionF<Integer> value, int index, WrapperOptions options) throws SQLException {
-                    if (value == null || !value.isPresent())
+                protected void doBind(PreparedStatement st, Option<Integer> value, int index, WrapperOptions options) throws SQLException {
+                    if (value == null || value.isEmpty())
                         st.setObject(index, null);
                     else
                         st.setInt(index, javaType.unwrap(value, Integer.class, options));
                 }
 
                 @Override
-                protected void doBind(CallableStatement st, OptionF<Integer> value, String name, WrapperOptions options)
+                protected void doBind(CallableStatement st, Option<Integer> value, String name, WrapperOptions options)
                         throws SQLException {
-                    if (value == null || !value.isPresent())
+                    if (value == null || value.isEmpty())
                         st.setObject(name, null);
                     else
                         st.setInt(name, javaType.unwrap(value, Integer.class, options));
                 }
             };
+        });
+
+        LibCustom.modifyArg(BasicBinder.class, "bind", 1, args -> {
+            var value = args[1];
+
+            if (value instanceof Option) {
+                var opt = (Option) value;
+                return opt.getOrElse(() -> null);
+            }
+
+            return value;
         });
     }
 

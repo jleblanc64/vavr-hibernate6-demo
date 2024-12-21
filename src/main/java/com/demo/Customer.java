@@ -1,7 +1,7 @@
 package com.demo;
 
-import io.github.jleblanc64.libcustom.functional.OptionF;
 import io.vavr.collection.List;
+import io.vavr.control.Option;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -15,9 +15,9 @@ public class Customer {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private OptionF<String> name;
+    private Option<String> name;
 
-    private OptionF<Integer> number;
+    private Option<Integer> number;
 
     private Integer i;
 

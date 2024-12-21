@@ -9,14 +9,14 @@ import com.fasterxml.jackson.datatype.jdk8.DoubleStreamSerializer;
 import com.fasterxml.jackson.datatype.jdk8.IntStreamSerializer;
 import com.fasterxml.jackson.datatype.jdk8.LongStreamSerializer;
 import com.fasterxml.jackson.datatype.jdk8.StreamSerializer;
-import io.github.jleblanc64.libcustom.functional.OptionF;
+import io.vavr.control.Option;
 
 import java.util.stream.DoubleStream;
 import java.util.stream.IntStream;
 import java.util.stream.LongStream;
 import java.util.stream.Stream;
 
-public class OptionFSerializers extends Serializers.Base
+public class VavrOptionSerializers extends Serializers.Base
         implements java.io.Serializable {
     private static final long serialVersionUID = 1L;
 
@@ -25,10 +25,10 @@ public class OptionFSerializers extends Serializers.Base
                                                      ReferenceType refType, BeanDescription beanDesc,
                                                      TypeSerializer contentTypeSerializer, JsonSerializer<Object> contentValueSerializer) {
         final Class<?> raw = refType.getRawClass();
-        if (OptionF.class.isAssignableFrom(raw)) {
+        if (Option.class.isAssignableFrom(raw)) {
             boolean staticTyping = (contentTypeSerializer == null)
                     && config.isEnabled(MapperFeature.USE_STATIC_TYPING);
-            return new OptionFSerializer(refType, staticTyping,
+            return new VavrOptionSerializer(refType, staticTyping,
                     contentTypeSerializer, contentValueSerializer);
         }
         return null;

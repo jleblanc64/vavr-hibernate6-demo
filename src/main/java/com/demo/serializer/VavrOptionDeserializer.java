@@ -7,12 +7,10 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.deser.ValueInstantiator;
 import com.fasterxml.jackson.databind.deser.std.ReferenceTypeDeserializer;
 import com.fasterxml.jackson.databind.jsontype.TypeDeserializer;
-import io.github.jleblanc64.libcustom.functional.OptionF;
+import io.vavr.control.Option;
 
-import static io.github.jleblanc64.libcustom.functional.OptionF.o;
-
-final class OptionFDeserializer
-        extends ReferenceTypeDeserializer<OptionF<?>> {
+final class VavrOptionDeserializer
+        extends ReferenceTypeDeserializer<Option<?>> {
     private static final long serialVersionUID = 1L;
 
     /*
@@ -24,8 +22,8 @@ final class OptionFDeserializer
     /**
      * @since 2.9
      */
-    public OptionFDeserializer(JavaType fullType, ValueInstantiator inst,
-                               TypeDeserializer typeDeser, JsonDeserializer<?> deser) {
+    public VavrOptionDeserializer(JavaType fullType, ValueInstantiator inst,
+                                  TypeDeserializer typeDeser, JsonDeserializer<?> deser) {
         super(fullType, inst, typeDeser, deser);
     }
 
@@ -36,14 +34,14 @@ final class OptionFDeserializer
      */
 
     @Override
-    public OptionFDeserializer withResolved(TypeDeserializer typeDeser, JsonDeserializer<?> valueDeser) {
-        return new OptionFDeserializer(_fullType, _valueInstantiator,
+    public VavrOptionDeserializer withResolved(TypeDeserializer typeDeser, JsonDeserializer<?> valueDeser) {
+        return new VavrOptionDeserializer(_fullType, _valueInstantiator,
                 typeDeser, valueDeser);
     }
 
     @Override
-    public OptionF<?> getNullValue(DeserializationContext ctxt) throws JsonMappingException {
-        return o(_valueDeserializer.getNullValue(ctxt));
+    public Option<?> getNullValue(DeserializationContext ctxt) throws JsonMappingException {
+        return Option.of(_valueDeserializer.getNullValue(ctxt));
     }
 
     @Override
@@ -52,19 +50,19 @@ final class OptionFDeserializer
     }
 
     @Override
-    public OptionF<?> referenceValue(Object contents) {
-        return o(contents);
+    public Option<?> referenceValue(Object contents) {
+        return Option.of(contents);
     }
 
     @Override
-    public Object getReferenced(OptionF<?> reference) {
+    public Object getReferenced(Option<?> reference) {
         // 23-Apr-2021, tatu: [modules-java8#214] Need to support empty
         //    for merging too
-        return reference.orElse(null);
+        return reference.getOrElse(() -> null);
     }
 
     @Override // since 2.9
-    public OptionF<?> updateReference(OptionF<?> reference, Object contents) {
-        return o(contents);
+    public Option<?> updateReference(Option<?> reference, Object contents) {
+        return Option.of(contents);
     }
 }

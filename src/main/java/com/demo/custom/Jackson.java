@@ -1,14 +1,13 @@
 package com.demo.custom;
 
 import io.github.jleblanc64.libcustom.LibCustom;
-import io.github.jleblanc64.libcustom.functional.OptionF;
 import io.vavr.collection.List;
+import io.vavr.control.Option;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.AbstractJackson2HttpMessageConverter;
 
 import static io.github.jleblanc64.libcustom.FieldMocked.*;
-import static io.github.jleblanc64.libcustom.functional.OptionF.emptyO;
 
 public class Jackson {
     public static void override() {
@@ -21,8 +20,8 @@ public class Jackson {
             fields(returned).forEach(f -> {
                 var type = f.getType();
                 Object empty;
-                if (type == OptionF.class)
-                    empty = emptyO();
+                if (type == Option.class)
+                    empty = Option.none();
                 else if (type == List.class)
                     empty = List.empty();
                 else

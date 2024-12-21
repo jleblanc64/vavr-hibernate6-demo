@@ -22,7 +22,7 @@ public class CustomerController {
 
     @PostMapping
     public CustomerDtoResp createCustomer(@RequestBody CustomerDtoReqSub customer) {
-        var c = customerRepository.save(customer.toCustomer());
+        var c = customerRepository.save(customer.toEntity());
         return new CustomerDtoResp(c);
     }
 

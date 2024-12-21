@@ -1,8 +1,7 @@
 package com.demo;
 
-import io.github.jleblanc64.libcustom.functional.ListF;
-import io.github.jleblanc64.libcustom.functional.OptionF;
 import io.vavr.collection.List;
+import io.vavr.control.Option;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -12,12 +11,12 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class CustomerDtoReq {
-    private OptionF<String> name;
-    private OptionF<Integer> number;
+    private Option<String> name;
+    private Option<Integer> number;
     private Integer i;
     private List<OrderDto> orders;
 
-    public Customer toCustomer() {
+    public Customer toEntity() {
         var c = new Customer();
         c.setName(name);
         c.setNumber(number);
