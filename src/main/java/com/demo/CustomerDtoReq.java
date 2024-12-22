@@ -16,6 +16,7 @@ public class CustomerDtoReq {
     private Integer i;
     private String city;
     private List<OrderDto> orders;
+    private Option<MembershipDto> membership;
 
     public Customer toEntity() {
         var c = new Customer();
@@ -23,7 +24,11 @@ public class CustomerDtoReq {
         c.setNumber(number);
         c.setI(i);
         c.setCity(city);
-        c.setOrders(orders.map(x -> x.toOrder(c)));
+        c.setOrders(orders.map(x -> x.toEntity(c)));
+
+        if (membership.isDefined())
+            c.setMembership(membership.get().toEntity());
+
         return c;
     }
 }

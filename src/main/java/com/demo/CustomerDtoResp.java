@@ -17,6 +17,7 @@ public class CustomerDtoResp {
     private Integer i;
     private String city;
     private List<OrderDto> orders;
+    private Option<MembershipDto> membership;
 
     public CustomerDtoResp(Customer c) {
         id = c.getId();
@@ -26,5 +27,6 @@ public class CustomerDtoResp {
         i = c.getI();
         city = c.getCity();
         orders = c.getOrders().map(OrderDto::new);
+        membership = Option.of(c.getMembership()).map(MembershipDto::new);
     }
 }

@@ -14,7 +14,7 @@ public class OrderDto {
         description = o.getDescription();
     }
 
-    public Order toOrder(Customer c) {
+    public Order toEntity(Customer c) {
         var o = new Order();
         o.setCustomer(c);
         o.setDescription(description);

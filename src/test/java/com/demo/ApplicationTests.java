@@ -58,6 +58,7 @@ public class ApplicationTests {
         assertEquals(3, respJ.get("number"));
         assertEquals(3, respJ.get("numberOpt"));
         assertEquals(4, respJ.get("i"));
+        assertTrue(respJ.isNull("membership"));
 
         var orders = respJ.getJSONArray("orders");
         assertEquals(0, orders.length());
@@ -125,5 +126,15 @@ public class ApplicationTests {
         respJa = new JSONArray(resp);
         assertEquals(2, respJa.length());
         assertEquals("a", respJa.getJSONObject(0).get("city"));
+
+        // test membership
+        req = new HttpEntity<>("{\"membership\":{\"description\":\"b\"}}");
+        resp = cli.postForObject(url, req, String.class);
+        respJ = new JSONObject(resp);
+        id = respJ.get("id");
+
+        resp = cli.getForObject(url + "/" + id, String.class);
+        respJ = new JSONObject(resp);
+        assertEquals("b", respJ.getJSONObject("membership").get("description"));
     }
 }
