@@ -28,5 +28,5 @@ public class Customer {
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "membership_id", nullable = false)
-    private Membership membership;
+    private Option<Membership> membership;
 }

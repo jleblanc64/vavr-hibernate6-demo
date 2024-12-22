@@ -6,6 +6,7 @@ import io.github.jleblanc64.libcustom.LibCustom;
 import io.vavr.control.Option;
 import lombok.SneakyThrows;
 import org.hibernate.collection.spi.PersistentBag;
+import org.hibernate.property.access.spi.GetterFieldImpl;
 import org.hibernate.property.access.spi.SetterFieldImpl;
 import org.hibernate.type.BagType;
 import org.springframework.core.MethodParameter;
@@ -38,6 +39,14 @@ public class HibernateList {
                 return Option.of(value);
 
             return LibCustom.ORIGINAL;
+        });
+
+        LibCustom.modifyReturn(GetterFieldImpl.class, "get", x -> {
+            var ret = x.returned;
+            if (ret instanceof Option)
+                return ((Option) ret).getOrNull();
+
+            return ret;
         });
 
         LibCustom.modifyArg(Class.forName("org.hibernate.annotations.common.reflection.java.JavaXProperty"), "create", 0, args -> {

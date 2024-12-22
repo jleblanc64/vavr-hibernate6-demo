@@ -35,7 +35,7 @@
         <dependency>
             <groupId>io.github.jleblanc64</groupId>
             <artifactId>lib-custom</artifactId>
-            <version>1.0.4</version>
+            <version>1.0.6</version>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>

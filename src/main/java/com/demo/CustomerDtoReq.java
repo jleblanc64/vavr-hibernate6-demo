@@ -25,9 +25,7 @@ public class CustomerDtoReq {
         c.setI(i);
         c.setCity(city);
         c.setOrders(orders.map(x -> x.toEntity(c)));
-
-        if (membership.isDefined())
-            c.setMembership(membership.get().toEntity());
+        c.setMembership(membership.map(MembershipDto::toEntity));
 
         return c;
     }

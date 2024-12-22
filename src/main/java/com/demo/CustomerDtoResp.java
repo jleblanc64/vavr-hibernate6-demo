@@ -27,6 +27,6 @@ public class CustomerDtoResp {
         i = c.getI();
         city = c.getCity();
         orders = c.getOrders().map(OrderDto::new);
-        membership = Option.of(c.getMembership()).map(MembershipDto::new);
+        membership = c.getMembership().map(MembershipDto::new);
     }
 }
