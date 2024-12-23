@@ -7,7 +7,6 @@ create table customers (
  id int primary key NOT NULL auto_increment,
  name VARCHAR(255),
  number int,
- i int,
  city VARCHAR(255),
  membership_id int,
  CONSTRAINT customers_membership_id_fk FOREIGN KEY (membership_id) REFERENCES membership (id)

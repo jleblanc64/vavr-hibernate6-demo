@@ -15,7 +15,6 @@ public class CustomerDtoResp {
     private String name;
     private int number;
     private Option<Integer> numberOpt;
-    private Integer i;
     private String city;
     private List<OrderDto> orders;
     private Option<MembershipDto> membership;
@@ -25,7 +24,6 @@ public class CustomerDtoResp {
         name = c.getName().getOrElse("default");
         number = c.getNumber().getOrElse(-10);
         numberOpt = c.getNumber();
-        i = c.getI();
         city = c.getCity();
         orders = c.getOrders().map(OrderDto::new);
         membership = c.getMembership().map(MembershipDto::new);

@@ -46,7 +46,7 @@ public class ApplicationTests {
         var url = "http://localhost:" + port + "/customers";
 
         // POST customer
-        var req = new HttpEntity<>("{\"name\":\"a\",\"number\":3,\"i\":4}");
+        var req = new HttpEntity<>("{\"name\":\"a\",\"number\":3}");
         var resp = cli.postForObject(url, req, String.class);
         var respJ = new JSONObject(resp);
         var id = respJ.get("id");
@@ -57,7 +57,6 @@ public class ApplicationTests {
         assertEquals("a", respJ.get("name"));
         assertEquals(3, respJ.get("number"));
         assertEquals(3, respJ.get("numberOpt"));
-        assertEquals(4, respJ.get("i"));
         assertTrue(respJ.isNull("membership"));
 
         var orders = respJ.getJSONArray("orders");
@@ -97,7 +96,6 @@ public class ApplicationTests {
         respJ = new JSONObject(resp);
         assertEquals(-10, respJ.getInt("number"));
         assertTrue(respJ.isNull("numberOpt"));
-        assertTrue(respJ.isNull("i"));
 
         orders = respJ.getJSONArray("orders");
         var descriptions = new HashSet<>();

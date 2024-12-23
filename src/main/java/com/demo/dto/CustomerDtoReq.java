@@ -14,7 +14,6 @@ import lombok.Setter;
 public class CustomerDtoReq {
     private Option<String> name;
     private Option<Integer> number;
-    private Integer i;
     private String city;
     private List<OrderDto> orders;
     private Option<MembershipDto> membership;
@@ -23,7 +22,6 @@ public class CustomerDtoReq {
         var c = new Customer();
         c.setName(name);
         c.setNumber(number);
-        c.setI(i);
         c.setCity(city);
         c.setOrders(orders.map(x -> x.toEntity(c)));
         c.setMembership(membership.map(MembershipDto::toEntity));
