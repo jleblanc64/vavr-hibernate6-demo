@@ -1,8 +1,9 @@
 package com.demo.spring;
 
-import com.demo.hibernate.VavrHibernate6;
 import com.zaxxer.hikari.HikariDataSource;
 import io.github.jleblanc64.libcustom.LibCustom;
+import io.github.jleblanc64.libcustom.custom.hibernate.VavrHibernate6;
+import io.github.jleblanc64.libcustom.custom.spring.VavrSpring6;
 import org.flywaydb.core.Flyway;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -25,9 +26,9 @@ public class DataSourceConfig {
     public DataSource getDataSource() {
         VavrHibernate6.override();
         VavrSpring6.override();
-
         LibCustom.load();
 
+        // Hikari
         var ds = new HikariDataSource();
         ds.setJdbcUrl(url);
         ds.setUsername(username);
