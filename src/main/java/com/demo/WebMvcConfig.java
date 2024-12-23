@@ -23,12 +23,11 @@ public class WebMvcConfig implements WebMvcConfigurer {
 
     @Override
     public void extendMessageConverters(List<HttpMessageConverter<?>> converters) {
-        var ser = om.getSerializerProviderInstance();
         om.registerModule(new VavrOptionModule());
 
         var simpleModule = new SimpleModule()
                 .addDeserializer(io.vavr.collection.List.class, new VavrListDeserializer())
-                .addSerializer(io.vavr.collection.List.class, new VavrListSerializer(ser));
+                .addSerializer(io.vavr.collection.List.class, new VavrListSerializer());
         om.registerModule(simpleModule);
 
         io.vavr.collection.List.ofAll(converters).filter(c -> c instanceof MappingJackson2HttpMessageConverter)
