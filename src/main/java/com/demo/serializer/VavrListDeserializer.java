@@ -9,7 +9,7 @@ import java.util.Collection;
 
 public class VavrListDeserializer extends StdDelegatingDeserializer<List<?>> {
     public VavrListDeserializer() {
-        super(new VavrListConverter());
+        super(new VavrListConverter.FromCollec());
     }
 
     @Override
