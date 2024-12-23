@@ -20,7 +20,7 @@ import java.util.List;
 
 import static io.github.jleblanc64.libcustom.FieldMocked.getRefl;
 
-public class VavrHibernate {
+public class VavrHibernate6 {
     static Class<?> classList = io.vavr.collection.List.class;
     static Class<?> classOption = Option.class;
 

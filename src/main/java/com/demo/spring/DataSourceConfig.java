@@ -1,7 +1,6 @@
 package com.demo.spring;
 
-import com.demo.hibernate.VavrHibernate;
-import com.demo.jackson.VavrJackson;
+import com.demo.hibernate.VavrHibernate6;
 import com.zaxxer.hikari.HikariDataSource;
 import io.github.jleblanc64.libcustom.LibCustom;
 import org.flywaydb.core.Flyway;
@@ -24,8 +23,8 @@ public class DataSourceConfig {
 
     @Bean
     public DataSource getDataSource() {
-        VavrHibernate.override();
-        VavrJackson.override();
+        VavrHibernate6.override();
+        VavrSpring6.override();
 
         LibCustom.load();
 
