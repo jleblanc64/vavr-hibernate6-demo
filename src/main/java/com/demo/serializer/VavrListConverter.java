@@ -7,11 +7,9 @@ import io.vavr.collection.List;
 
 import java.util.Collection;
 
-import static io.github.jleblanc64.libcustom.functional.ListF.f;
-
-public class VavrListConverter implements Converter<Collection, List> {
+public class VavrListConverter implements Converter<Collection<?>, List<?>> {
     @Override
-    public List convert(Collection value) {
+    public List<?> convert(Collection value) {
         return List.ofAll(value);
     }
 

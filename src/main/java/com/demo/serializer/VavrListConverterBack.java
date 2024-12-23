@@ -5,9 +5,9 @@ import io.vavr.collection.List;
 
 import java.util.Collection;
 
-public class VavrListConverter2 extends StdConverter<List, Collection> {
+public class VavrListConverterBack extends StdConverter<List<?>, Collection<?>> {
     @Override
-    public Collection convert(List value) {
+    public Collection<?> convert(List value) {
         return value.toJavaList();
     }
 }

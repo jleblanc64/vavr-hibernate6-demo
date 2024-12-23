@@ -8,13 +8,13 @@ public class VavrListSerializer extends StdDelegatingSerializer {
     SerializerProvider ser;
 
     public VavrListSerializer(SerializerProvider ser) {
-        super(new VavrListConverter2());
+        super(new VavrListConverterBack());
         this.ser = ser;
     }
 
     @Override
-    protected StdDelegatingSerializer withDelegate(Converter<Object, ?> converter, JavaType delegateType, JsonSerializer<?> delegateSerializer) {
-        return new StdDelegatingSerializer(converter, delegateType, delegateSerializer);
+    protected StdDelegatingSerializer withDelegate(Converter<Object, ?> c, JavaType t, JsonSerializer<?> deser) {
+        return new StdDelegatingSerializer(c, t, deser);
     }
 
     @Override

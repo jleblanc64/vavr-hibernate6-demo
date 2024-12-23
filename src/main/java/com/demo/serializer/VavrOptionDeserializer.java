@@ -9,34 +9,16 @@ import com.fasterxml.jackson.databind.deser.std.ReferenceTypeDeserializer;
 import com.fasterxml.jackson.databind.jsontype.TypeDeserializer;
 import io.vavr.control.Option;
 
-final class VavrOptionDeserializer
-        extends ReferenceTypeDeserializer<Option<?>> {
+class VavrOptionDeserializer extends ReferenceTypeDeserializer<Option<?>> {
     private static final long serialVersionUID = 1L;
 
-    /*
-    /**********************************************************
-    /* Life-cycle
-    /**********************************************************
-     */
-
-    /**
-     * @since 2.9
-     */
-    public VavrOptionDeserializer(JavaType fullType, ValueInstantiator inst,
-                                  TypeDeserializer typeDeser, JsonDeserializer<?> deser) {
+    public VavrOptionDeserializer(JavaType fullType, ValueInstantiator inst, TypeDeserializer typeDeser, JsonDeserializer<?> deser) {
         super(fullType, inst, typeDeser, deser);
     }
 
-    /*
-    /**********************************************************
-    /* Abstract method implementations
-    /**********************************************************
-     */
-
     @Override
     public VavrOptionDeserializer withResolved(TypeDeserializer typeDeser, JsonDeserializer<?> valueDeser) {
-        return new VavrOptionDeserializer(_fullType, _valueInstantiator,
-                typeDeser, valueDeser);
+        return new VavrOptionDeserializer(_fullType, _valueInstantiator, typeDeser, valueDeser);
     }
 
     @Override
@@ -56,12 +38,10 @@ final class VavrOptionDeserializer
 
     @Override
     public Object getReferenced(Option<?> reference) {
-        // 23-Apr-2021, tatu: [modules-java8#214] Need to support empty
-        //    for merging too
-        return reference.getOrElse(() -> null);
+        return reference.getOrNull();
     }
 
-    @Override // since 2.9
+    @Override
     public Option<?> updateReference(Option<?> reference, Object contents) {
         return Option.of(contents);
     }

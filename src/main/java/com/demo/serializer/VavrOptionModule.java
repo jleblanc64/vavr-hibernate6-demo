@@ -37,6 +37,6 @@ public class VavrOptionModule extends Module {
 
     @Override
     public String getModuleName() {
-        return "IOptionFModule";
+        return "OptionModule";
     }
 }
