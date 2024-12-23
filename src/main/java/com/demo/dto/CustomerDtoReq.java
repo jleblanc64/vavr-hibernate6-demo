@@ -14,7 +14,7 @@ import lombok.Setter;
 public class CustomerDtoReq {
     private Option<String> name;
     private Option<Integer> number;
-    private String city;
+    private Option<String> city;
     private List<OrderDto> orders;
     private Option<MembershipDto> membership;
 

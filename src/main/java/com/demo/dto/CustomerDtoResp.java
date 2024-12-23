@@ -15,7 +15,7 @@ public class CustomerDtoResp {
     private String name;
     private int number;
     private Option<Integer> numberOpt;
-    private String city;
+    private Option<String> city;
     private List<OrderDto> orders;
     private Option<MembershipDto> membership;
 

@@ -19,7 +19,7 @@ public class Customer {
 
     private Option<Integer> number;
 
-    private String city;
+    private Option<String> city;
 
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
     private List<Order> orders;
