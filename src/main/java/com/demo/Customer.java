@@ -27,6 +27,6 @@ public class Customer {
     private List<Order> orders;
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "membership_id", nullable = false)
+    @JoinColumn(name = "membership_id")
     private Option<Membership> membership;
 }
