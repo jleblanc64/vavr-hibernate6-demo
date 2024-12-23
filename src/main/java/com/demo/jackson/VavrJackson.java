@@ -1,4 +1,4 @@
-package com.demo.custom;
+package com.demo.jackson;
 
 import io.github.jleblanc64.libcustom.LibCustom;
 import io.vavr.collection.List;
@@ -9,7 +9,7 @@ import org.springframework.http.converter.json.AbstractJackson2HttpMessageConver
 
 import static io.github.jleblanc64.libcustom.FieldMocked.*;
 
-public class Jackson {
+public class VavrJackson {
     public static void override() {
         // replace null with empty OptionF or ListF
         LibCustom.modifyReturn(AbstractJackson2HttpMessageConverter.class, "readJavaType", argsR -> {

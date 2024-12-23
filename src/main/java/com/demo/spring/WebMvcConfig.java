@@ -1,7 +1,7 @@
-package com.demo;
+package com.demo.spring;
 
-import com.demo.serializer.VavrListDeser;
-import com.demo.serializer.VavrOptionDeser;
+import com.demo.jackson.VavrListDeser;
+import com.demo.jackson.VavrOptionDeser;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import io.vavr.collection.List;

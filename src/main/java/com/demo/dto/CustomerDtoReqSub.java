@@ -1,4 +1,4 @@
-package com.demo;
+package com.demo.dto;
 
 public class CustomerDtoReqSub extends CustomerDtoReq {
 }

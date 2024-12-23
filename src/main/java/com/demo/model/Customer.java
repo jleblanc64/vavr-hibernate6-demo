@@ -1,4 +1,4 @@
-package com.demo;
+package com.demo.model;
 
 import io.vavr.collection.List;
 import io.vavr.control.Option;

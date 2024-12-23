@@ -1,5 +1,8 @@
 package com.demo;
 
+import com.demo.dto.CustomerDtoReqSub;
+import com.demo.dto.CustomerDtoResp;
+import com.demo.repo.CustomerRepository;
 import io.vavr.collection.List;
 import io.vavr.control.Option;
 import org.springframework.beans.factory.annotation.Autowired;

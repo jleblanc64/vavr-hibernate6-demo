@@ -1,4 +1,4 @@
-package com.demo.serializer;
+package com.demo.jackson;
 
 import com.fasterxml.jackson.databind.util.StdConverter;
 import io.vavr.control.Option;

@@ -1,5 +1,6 @@
-package com.demo;
+package com.demo.dto;
 
+import com.demo.model.Membership;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

@@ -1,4 +1,4 @@
-package com.demo.custom;
+package com.demo.hibernate;
 
 import com.demo.utils.FieldCustomType;
 import com.demo.utils.TypeImpl;
@@ -9,6 +9,7 @@ import org.hibernate.collection.spi.PersistentBag;
 import org.hibernate.property.access.spi.GetterFieldImpl;
 import org.hibernate.property.access.spi.SetterFieldImpl;
 import org.hibernate.type.BagType;
+import org.hibernate.type.descriptor.jdbc.BasicBinder;
 import org.springframework.core.MethodParameter;
 import org.springframework.web.method.annotation.AbstractNamedValueMethodArgumentResolver;
 
@@ -19,8 +20,9 @@ import java.util.List;
 
 import static io.github.jleblanc64.libcustom.FieldMocked.getRefl;
 
-public class HibernateList {
-    public static Class<?> class_ = io.vavr.collection.List.class;
+public class VavrHibernate {
+    public static Class<?> classList = io.vavr.collection.List.class;
+    public static Class<?> classOption = Option.class;
 
     @SneakyThrows
     public static void override() {
@@ -30,12 +32,12 @@ public class HibernateList {
             var self = argsSelf.self;
             var field = (Field) getRefl(self, SetterFieldImpl.class.getDeclaredField("field"));
 
-            if (field.getType() == class_) {
+            if (field.getType() == classList) {
                 var bag = (PersistentBag) value;
                 return io.vavr.collection.List.ofAll(bag);
             }
 
-            if (field.getType() == HibernateOption.class_ && !(value instanceof Option))
+            if (field.getType() == classOption && !(value instanceof Option))
                 return Option.of(value);
 
             return LibCustom.ORIGINAL;
@@ -49,6 +51,17 @@ public class HibernateList {
             return ret;
         });
 
+        LibCustom.modifyArg(BasicBinder.class, "bind", 1, args -> {
+            var value = args[1];
+
+            if (value instanceof Option) {
+                var opt = (Option) value;
+                return opt.getOrNull();
+            }
+
+            return value;
+        });
+
         LibCustom.modifyArg(Class.forName("org.hibernate.annotations.common.reflection.java.JavaXProperty"), "create", 0, args -> {
             var member = args[0];
             if (member instanceof Field) {
@@ -59,10 +72,10 @@ public class HibernateList {
                 var type = (ParameterizedType) field.getGenericType();
                 var typeRaw = type.getRawType();
                 var typeParam = type.getActualTypeArguments()[0];
-                if (typeRaw == class_)
+                if (typeRaw == classList)
                     return FieldCustomType.create(field, new TypeImpl(List.class, new Type[]{typeParam}, null));
 
-                if (typeRaw == HibernateOption.class_)
+                if (typeRaw == classOption)
                     return FieldCustomType.create(field, new TypeImpl((Class<?>) typeParam, new Type[]{}, null));
             }
 
@@ -71,7 +84,7 @@ public class HibernateList {
 
         LibCustom.modifyReturn(Class.forName("org.hibernate.metamodel.internal.BaseAttributeMetadata"), "getJavaType", argRet -> {
             var clazz = argRet.returned;
-            if (clazz == class_)
+            if (clazz == classList)
                 return List.class;
 
             return clazz;

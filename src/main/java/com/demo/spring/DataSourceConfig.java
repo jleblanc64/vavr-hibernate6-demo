@@ -1,8 +1,7 @@
-package com.demo;
+package com.demo.spring;
 
-import com.demo.custom.HibernateList;
-import com.demo.custom.HibernateOption;
-import com.demo.custom.Jackson;
+import com.demo.hibernate.VavrHibernate;
+import com.demo.jackson.VavrJackson;
 import com.zaxxer.hikari.HikariDataSource;
 import io.github.jleblanc64.libcustom.LibCustom;
 import org.flywaydb.core.Flyway;
@@ -11,8 +10,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import javax.sql.DataSource;
-
-import static io.github.jleblanc64.libcustom.functional.Functor.print;
 
 @Configuration
 public class DataSourceConfig {
@@ -27,10 +24,9 @@ public class DataSourceConfig {
 
     @Bean
     public DataSource getDataSource() {
-        HibernateList.override();
-        Jackson.override();
+        VavrHibernate.override();
+        VavrJackson.override();
 
-        HibernateOption.override();
         LibCustom.load();
 
         var ds = new HikariDataSource();

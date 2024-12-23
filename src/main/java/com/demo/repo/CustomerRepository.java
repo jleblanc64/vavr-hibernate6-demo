@@ -1,5 +1,6 @@
-package com.demo;
+package com.demo.repo;
 
+import com.demo.model.Customer;
 import io.vavr.collection.List;
 import io.vavr.control.Option;
 import org.springframework.data.jpa.repository.JpaRepository;

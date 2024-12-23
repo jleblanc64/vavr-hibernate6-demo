@@ -1,5 +1,7 @@
-package com.demo;
+package com.demo.dto;
 
+import com.demo.model.Customer;
+import com.demo.model.Order;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

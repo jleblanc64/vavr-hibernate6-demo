@@ -1,5 +1,6 @@
-package com.demo;
+package com.demo.dto;
 
+import com.demo.model.Customer;
 import io.vavr.collection.List;
 import io.vavr.control.Option;
 import lombok.Getter;
