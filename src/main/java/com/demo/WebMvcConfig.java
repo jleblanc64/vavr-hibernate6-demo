@@ -31,8 +31,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
                 .addSerializer(io.vavr.collection.List.class, new VavrListSerializer(ser));
         om.registerModule(simpleModule);
 
-        converters.stream().filter(c -> c instanceof MappingJackson2HttpMessageConverter)
-                .map(c -> (MappingJackson2HttpMessageConverter) c)
-                .forEach(c -> c.setObjectMapper(om));
+        io.vavr.collection.List.ofAll(converters).filter(c -> c instanceof MappingJackson2HttpMessageConverter)
+                .forEach(c -> ((MappingJackson2HttpMessageConverter) c).setObjectMapper(om));
     }
 }
