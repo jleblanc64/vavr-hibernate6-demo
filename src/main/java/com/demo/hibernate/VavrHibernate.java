@@ -21,8 +21,8 @@ import java.util.List;
 import static io.github.jleblanc64.libcustom.FieldMocked.getRefl;
 
 public class VavrHibernate {
-    public static Class<?> classList = io.vavr.collection.List.class;
-    public static Class<?> classOption = Option.class;
+    static Class<?> classList = io.vavr.collection.List.class;
+    static Class<?> classOption = Option.class;
 
     @SneakyThrows
     public static void override() {
