@@ -1,7 +1,6 @@
 package com.demo;
 
-import com.demo.serializer.VavrListDeserializer;
-import com.demo.serializer.VavrListSerializer;
+import com.demo.serializer.VavrListDeser;
 import com.demo.serializer.VavrOptionModule;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
@@ -26,8 +25,8 @@ public class WebMvcConfig implements WebMvcConfigurer {
         om.registerModule(new VavrOptionModule());
 
         var simpleModule = new SimpleModule()
-                .addDeserializer(io.vavr.collection.List.class, new VavrListDeserializer())
-                .addSerializer(io.vavr.collection.List.class, new VavrListSerializer());
+                .addDeserializer(io.vavr.collection.List.class, new VavrListDeser.Deserializer())
+                .addSerializer(io.vavr.collection.List.class, new VavrListDeser.Serializer());
         om.registerModule(simpleModule);
 
         io.vavr.collection.List.ofAll(converters).filter(c -> c instanceof MappingJackson2HttpMessageConverter)
