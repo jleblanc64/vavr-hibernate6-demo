@@ -32,9 +32,7 @@ public class DataSourceConfig {
         ds.setUsername(username);
         ds.setPassword(password);
 
-        // default is 10
-        ds.setMaximumPoolSize(8);
-
+        // Flyway migration
         var config = Flyway.configure().dataSource(url, username, password);
         config.load().migrate();
 
