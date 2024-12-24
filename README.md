@@ -1,12 +1,7 @@
 # hibernate6
 
-Test class: `com.demo.ApplicationTests`
+Demo that uses Vavr data types such as `List` and `Option` in Hibernate `Entity` and Spring `DTO`
 
 ---
 
-Publish to maven central:
-
-1 ) `mvn deploy`
-
-2 ) Click `publish`button on: 
-https://central.sonatype.com (sign in with Github)
+Test class: `com.demo.ApplicationTests`
