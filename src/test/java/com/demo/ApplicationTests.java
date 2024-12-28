@@ -17,7 +17,6 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 import java.util.HashSet;
 import java.util.Set;
 
-import static io.github.jleblanc64.libcustom.functional.Functor.print;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -65,8 +64,8 @@ public class ApplicationTests {
 
         // GET by name
         resp = cli.getForObject(url + "/by-name?name=a", String.class);
-        print("xoxoxoxoxoxo");
-        print(resp);
+        respJ = new JSONObject(resp);
+        assertEquals("a", respJ.get("name"));
 
         var httpCode = cli.getForEntity(url + "/by-name?name=b", String.class).getStatusCodeValue();
         assertThat(httpCode).isEqualTo(404);
