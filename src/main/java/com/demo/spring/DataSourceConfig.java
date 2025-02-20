@@ -1,12 +1,12 @@
 package com.demo.spring;
 
 import com.demo.custom.hibernate.Utils;
+import com.demo.custom.hibernate.VavrHibernate;
 import com.demo.custom.jackson.VavrJackson;
 import com.demo.implem.MetaListImpl;
 import com.demo.implem.MetaOptionImpl;
 import com.zaxxer.hikari.HikariDataSource;
 import io.github.jleblanc64.libcustom.LibCustom;
-import io.github.jleblanc64.libcustom.custom.hibernate.VavrHibernate6;
 import io.github.jleblanc64.libcustom.custom.hibernate.duplicate.ParameterizedTypeImpl;
 import io.github.jleblanc64.libcustom.meta.MetaOption;
 import lombok.SneakyThrows;
@@ -37,6 +37,8 @@ public class DataSourceConfig {
         var metaList = new MetaListImpl();
 
 //        VavrHibernate6.override(metaOption, metaList);
+        VavrHibernate.override(metaList);
+
         VavrJackson.override(metaOption, metaList);
 
         overrideSpring(metaOption);

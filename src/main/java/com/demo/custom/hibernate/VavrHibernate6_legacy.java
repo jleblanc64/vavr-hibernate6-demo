@@ -29,7 +29,7 @@ import java.util.List;
 
 import static io.github.jleblanc64.libcustom.FieldMocked.getRefl;
 
-public class VavrHibernate6 {
+public class VavrHibernate6_legacy {
 
     @SneakyThrows
     public static void override(MetaOption metaOption, MetaList metaList) {

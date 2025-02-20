@@ -37,7 +37,7 @@ import static io.github.jleblanc64.libcustom.custom.hibernate.Utils.isEntity;
 import static io.github.jleblanc64.libcustom.functional.ListF.f;
 
 // https://github.com/hibernate/hibernate-commons-annotations/blob/5.1/src/main/java/org/hibernate/annotations/common/reflection/java/JavaXProperty.java
-public class JavaXProperty extends JavaXMember implements XProperty {
+public class JavaXProperty_legacy extends JavaXMember implements XProperty {
     public final TypeEnvironment env;
     public final JavaReflectionManager factory;
     public final ListF<Annotation> annotations;
@@ -47,24 +47,24 @@ public class JavaXProperty extends JavaXMember implements XProperty {
     private XClass elementClass;
 
     @SneakyThrows
-    public static JavaXProperty of(JavaXMember m, Type type, MetaList metaList) {
+    public static JavaXProperty_legacy of(JavaXMember m, Type type, MetaList metaList) {
         return of(m, type, f(m.getAnnotations()), metaList);
     }
 
     @SneakyThrows
-    public static JavaXProperty of(Field f, Type type, JavaXProperty j, MetaList metaList) {
-        return new JavaXProperty(f, type, j.env, j.factory, j.annotations, metaList);
+    public static JavaXProperty_legacy of(Field f, Type type, JavaXProperty_legacy j, MetaList metaList) {
+        return new JavaXProperty_legacy(f, type, j.env, j.factory, j.annotations, metaList);
     }
 
     @SneakyThrows
-    private static JavaXProperty of(JavaXMember m, Type type, List<Annotation> annotations, MetaList metaList) {
+    private static JavaXProperty_legacy of(JavaXMember m, Type type, List<Annotation> annotations, MetaList metaList) {
         var env = (TypeEnvironment) getRefl(m, "env");
-        return new JavaXProperty(m.getMember(), type, env, new JavaReflectionManager(), f(annotations), metaList);
+        return new JavaXProperty_legacy(m.getMember(), type, env, new JavaReflectionManager(), f(annotations), metaList);
     }
 
     @SneakyThrows
-    private JavaXProperty(Member member, Type type, TypeEnvironment env, JavaReflectionManager factory, ListF<Annotation> annotations,
-                          MetaList metaList) {
+    public JavaXProperty_legacy(Member member, Type type, TypeEnvironment env, JavaReflectionManager factory, ListF<Annotation> annotations,
+                                MetaList metaList) {
         super(member, type, env, factory, factory.toXType(env, typeOf(member, env)));
 
         this.env = env;
