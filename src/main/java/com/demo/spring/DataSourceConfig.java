@@ -8,7 +8,6 @@ import com.zaxxer.hikari.HikariDataSource;
 import io.github.jleblanc64.libcustom.LibCustom;
 import io.github.jleblanc64.libcustom.custom.hibernate.VavrHibernate6;
 import io.github.jleblanc64.libcustom.custom.hibernate.duplicate.ParameterizedTypeImpl;
-import io.github.jleblanc64.libcustom.custom.spring.VavrSpring;
 import io.github.jleblanc64.libcustom.meta.MetaOption;
 import lombok.SneakyThrows;
 import org.flywaydb.core.Flyway;
@@ -17,14 +16,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.MethodParameter;
 import org.springframework.data.projection.DefaultMethodInvokingMethodInterceptor;
-import org.springframework.data.repository.Repository;
 
 import javax.sql.DataSource;
-import java.util.List;
 import java.util.Optional;
-
-import static io.github.jleblanc64.libcustom.custom.hibernate.Utils.getRefl;
-import static io.github.jleblanc64.libcustom.functional.ListF.f;
 
 @Configuration
 public class DataSourceConfig {
@@ -44,7 +38,6 @@ public class DataSourceConfig {
 
         VavrHibernate6.override(metaOption, metaList);
         VavrJackson.override(metaOption, metaList);
-//        VavrSpring.override(metaOption);
 
         overrideSpring(metaOption);
 
@@ -65,7 +58,7 @@ public class DataSourceConfig {
     }
 
     @SneakyThrows
-    static void overrideSpring(MetaOption metaOption){
+    static void overrideSpring(MetaOption metaOption) {
         var clazz = Class.forName("org.springframework.data.util.TypeDiscoverer");
 //        LibCustom.modifyArg(clazz, "createInfo", 0, args -> {
 //            var type = args[0].toString();
