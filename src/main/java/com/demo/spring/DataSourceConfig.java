@@ -46,7 +46,6 @@ public class DataSourceConfig {
         VavrJackson.override(metaOption, metaList);
 //        VavrSpring.override(metaOption);
 
-        // xoxoxoxoxoxo
         overrideSpring(metaOption);
 
         OverrideContentType.override();
