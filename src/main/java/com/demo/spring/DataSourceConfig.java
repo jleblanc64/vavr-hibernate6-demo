@@ -36,7 +36,7 @@ public class DataSourceConfig {
         var metaOption = new MetaOptionImpl();
         var metaList = new MetaListImpl();
 
-        VavrHibernate6.override(metaOption, metaList);
+//        VavrHibernate6.override(metaOption, metaList);
         VavrJackson.override(metaOption, metaList);
 
         overrideSpring(metaOption);

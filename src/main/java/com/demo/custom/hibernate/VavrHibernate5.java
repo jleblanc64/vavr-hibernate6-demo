@@ -24,6 +24,7 @@ import io.github.jleblanc64.libcustom.meta.MetaList;
 import io.github.jleblanc64.libcustom.meta.MetaOption;
 import jakarta.persistence.metamodel.PluralAttribute;
 import lombok.SneakyThrows;
+import org.hibernate.annotations.common.reflection.XProperty;
 import org.hibernate.boot.model.internal.AnnotationBinder;
 import org.hibernate.boot.model.internal.BagBinder;
 import org.hibernate.boot.model.internal.CollectionBinder;
@@ -110,6 +111,7 @@ public class VavrHibernate5 {
     @SneakyThrows
     public static void override(MetaList metaList) {
         var bagProvList = metaList.bag();
+
 
 //        LibCustom.modifyArg(AnnotationBinder.class, "processElementAnnotations", 2, args -> {
 //            var pid = (PropertyInferredData) args[2];
