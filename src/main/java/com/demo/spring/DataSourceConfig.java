@@ -7,6 +7,7 @@ import com.demo.implem.MetaListImpl;
 import com.demo.implem.MetaOptionImpl;
 import com.zaxxer.hikari.HikariDataSource;
 import io.github.jleblanc64.libcustom.LibCustom;
+import io.github.jleblanc64.libcustom.custom.hibernate.VavrHibernate5;
 import io.github.jleblanc64.libcustom.custom.hibernate.duplicate.ParameterizedTypeImpl;
 import io.github.jleblanc64.libcustom.meta.MetaOption;
 import lombok.SneakyThrows;
@@ -38,6 +39,7 @@ public class DataSourceConfig {
 
 //        VavrHibernate6.override(metaOption, metaList);
         VavrHibernate.override(metaList);
+        VavrHibernate5.override(metaOption);
 
         VavrJackson.override(metaOption, metaList);
 
