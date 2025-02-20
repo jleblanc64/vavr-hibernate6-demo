@@ -19,6 +19,14 @@
         <flyway.version>8.2.1</flyway.version>
     </properties>
     <dependencies>
+
+        <dependency>
+            <groupId>org.hibernate.orm</groupId>
+            <artifactId>hibernate-core</artifactId>
+            <version>6.6.8.Final</version>
+            <scope>compile</scope>
+        </dependency>
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
@@ -35,7 +43,13 @@
         <dependency>
             <groupId>io.github.jleblanc64</groupId>
             <artifactId>lib-custom</artifactId>
-            <version>1.0.7</version>
+            <version>1.0.9</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.hibernate</groupId>
+                    <artifactId>hibernate-core</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.reflections</groupId>
