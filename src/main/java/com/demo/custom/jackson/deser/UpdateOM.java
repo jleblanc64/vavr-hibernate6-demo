@@ -15,9 +15,9 @@
  */
 package com.demo.custom.jackson.deser;
 
+import com.demo.custom.hibernate.Utils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
-import io.github.jleblanc64.libcustom.custom.hibernate.Utils;
 import io.github.jleblanc64.libcustom.meta.MetaList;
 import io.github.jleblanc64.libcustom.meta.MetaOption;
 import lombok.SneakyThrows;
