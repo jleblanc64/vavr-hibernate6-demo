@@ -24,7 +24,6 @@ import lombok.SneakyThrows;
 import org.hibernate.annotations.common.reflection.XClass;
 import org.hibernate.annotations.common.reflection.java.JavaReflectionManager;
 import org.hibernate.annotations.common.reflection.java.generics.TypeEnvironment;
-import org.hibernate.boot.model.internal.CollectionBinder;
 import org.hibernate.engine.spi.SharedSessionContractImplementor;
 import org.hibernate.metamodel.CollectionClassification;
 import org.hibernate.metamodel.internal.PluralAttributeMetadata;
@@ -50,7 +49,6 @@ public class VavrHibernate {
             var typeS = Utils.getRefl(returned, "type").toString();
             var env = (TypeEnvironment) Utils.getRefl(returned, "env");
             var factory = (JavaReflectionManager) Utils.getRefl(returned, "factory");
-            var xType = Utils.getRefl(returned, "xType");
 
             if (typeS.startsWith(metaList.monadClass().getName() + "<"))
                 return mock(returned.getClass(), invocation -> {
@@ -64,7 +62,6 @@ public class VavrHibernate {
                         return true;
                     if (name.equals("getCollectionClass"))
                         return List.class;
-//                        return metaList.monadClass();
                     if (name.equals("getElementClass"))
                         return buildClass(typeS, env, factory);
 
@@ -75,17 +72,14 @@ public class VavrHibernate {
             return LibCustom.ORIGINAL;
         });
 
+        LibCustom.override(Class.forName("org.hibernate.metamodel.internal.PluralAttributeMetadataImpl"), "determineCollectionType",
+                args -> {
+                    var clazz = (Class) args[0];
+                    if (metaList.isSuperClassOf(clazz))
+                        return CollectionClassification.LIST;
 
-        var bagProvList = metaList.bag();
-
-        var c = Class.forName("org.hibernate.metamodel.internal.PluralAttributeMetadataImpl");
-        LibCustom.override(c, "determineCollectionType", args -> {
-            var clazz = (Class) args[0];
-            if (metaList.isSuperClassOf(clazz))
-                return CollectionClassification.LIST;
-
-            return LibCustom.ORIGINAL;
-        });
+                    return LibCustom.ORIGINAL;
+                });
 
         LibCustom.modifyArg(PluralAttributeBuilder.class, "build", 0, args -> {
             var attributeMetadata = (PluralAttributeMetadata) args[0];
@@ -113,6 +107,7 @@ public class VavrHibernate {
             return collection;
         });
 
+        var bagProvList = metaList.bag();
         LibCustom.override(BagType.class, "instantiate", args -> {
             if (args.length == 1)
                 return LibCustom.ORIGINAL;
@@ -128,8 +123,8 @@ public class VavrHibernate {
             var arg1 = args[1];
 
             if (metaList.isSuperClassOf(arg1)) {
-                var collec = metaList.toJava(arg1);
-                return checkPersistentBag(bagProvList.of((SharedSessionContractImplementor) args[0], collec));
+                var c = metaList.toJava(arg1);
+                return checkPersistentBag(bagProvList.of((SharedSessionContractImplementor) args[0], c));
             }
 
             return LibCustom.ORIGINAL;
