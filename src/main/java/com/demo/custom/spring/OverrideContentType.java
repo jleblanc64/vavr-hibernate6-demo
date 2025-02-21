@@ -1,4 +1,4 @@
-package com.demo.spring;
+package com.demo.custom.spring;
 
 import io.github.jleblanc64.libcustom.LibCustom;
 import lombok.SneakyThrows;

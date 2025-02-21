@@ -1,66 +1,18 @@
-package com.demo.spring;
+package com.demo.custom.spring;
 
 import com.demo.custom.hibernate.Utils;
-import com.demo.custom.hibernate.VavrHibernate;
-import com.demo.custom.jackson.VavrJackson;
-import com.demo.implem.MetaListImpl;
-import com.demo.implem.MetaOptionImpl;
-import com.zaxxer.hikari.HikariDataSource;
 import io.github.jleblanc64.libcustom.LibCustom;
 import io.github.jleblanc64.libcustom.custom.hibernate.duplicate.ParameterizedTypeImpl;
 import io.github.jleblanc64.libcustom.meta.MetaOption;
 import lombok.SneakyThrows;
-import org.flywaydb.core.Flyway;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.core.MethodParameter;
 import org.springframework.data.projection.DefaultMethodInvokingMethodInterceptor;
 
-import javax.sql.DataSource;
 import java.util.Optional;
 
-@Configuration
-public class DataSourceConfig {
-    @Value("${spring.datasource.url}")
-    String url;
-
-    @Value("${spring.datasource.username}")
-    String username;
-
-    @Value("${spring.datasource.password}")
-    String password;
-
-    @Bean
-    public DataSource getDataSource() {
-        var metaOption = new MetaOptionImpl();
-        var metaList = new MetaListImpl();
-
-        VavrHibernate.override(metaList);
-        VavrHibernate.override(metaOption);
-
-        VavrJackson.override(metaOption, metaList);
-
-        overrideSpring(metaOption);
-
-        OverrideContentType.override();
-        LibCustom.load();
-
-        // Hikari
-        var ds = new HikariDataSource();
-        ds.setJdbcUrl(url);
-        ds.setUsername(username);
-        ds.setPassword(password);
-
-        // Flyway migration
-        var config = Flyway.configure().dataSource(url, username, password);
-        config.load().migrate();
-
-        return ds;
-    }
-
+public class OverrideSpring {
     @SneakyThrows
-    static void overrideSpring(MetaOption metaOption) {
+    public static void override(MetaOption metaOption) {
         LibCustom.modifyReturn(MethodParameter.class, "getGenericParameterType", argsR -> {
             var returned = argsR.returned.toString();
             if (returned.startsWith(metaOption.monadClass().getName() + "<")) {

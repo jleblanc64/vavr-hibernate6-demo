@@ -1,4 +1,4 @@
-package com.demo.spring;
+package com.demo.config;
 
 import io.github.jleblanc64.libcustom.LibCustom;
 import io.github.jleblanc64.libcustom.custom.jackson.VavrJackson2;
