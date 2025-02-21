@@ -24,13 +24,21 @@ import lombok.SneakyThrows;
 import org.hibernate.annotations.common.reflection.XClass;
 import org.hibernate.annotations.common.reflection.java.JavaReflectionManager;
 import org.hibernate.annotations.common.reflection.java.generics.TypeEnvironment;
+import org.hibernate.boot.model.internal.CollectionBinder;
+import org.hibernate.engine.spi.SharedSessionContractImplementor;
+import org.hibernate.metamodel.CollectionClassification;
+import org.hibernate.metamodel.internal.PluralAttributeMetadata;
+import org.hibernate.metamodel.model.domain.internal.PluralAttributeBuilder;
+import org.hibernate.persister.collection.AbstractCollectionPersister;
+import org.hibernate.type.BagType;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.List;
 
-import static io.github.jleblanc64.libcustom.custom.hibernate.Utils.getRefl;
+import static com.demo.custom.hibernate.Utils.checkPersistentBag;
+import static com.demo.custom.hibernate.Utils.isOfType;
 import static org.mockito.Mockito.mock;
 
 public class VavrHibernate {
@@ -70,90 +78,62 @@ public class VavrHibernate {
 
         var bagProvList = metaList.bag();
 
-//        LibCustom.modifyArg(AnnotationBinder.class, "processElementAnnotations", 2, args -> {
-//            var pid = (PropertyInferredData) args[2];
-//            var p = pid.getProperty();
-//            var type = (Type) getRefl(p, "type");
-//            var at = (AccessType) getRefl(pid, "defaultAccess");
-//            var rm = (ReflectionManager) getRefl(pid, "reflectionManager");
-//            var j = JavaXProperty.of((JavaXMember) p, type, metaList);
-//
-//            if (!(type instanceof ParameterizedType))
-//                return LibCustom.ORIGINAL;
-//
-//            var rawType = ((ParameterizedType) type).getRawType();
-//            if (metaList.isSuperClassOf(rawType)) {
-//                var f = (Field) j.getMember();
-//                var jOver = JavaXProperty.of(f, type, j, metaList);
-//                return new PropertyInferredData(pid.getDeclaringClass(), jOver, at.getType(), rm);
-//            }
-//
-//            return LibCustom.ORIGINAL;
-//        });
+        var c = Class.forName("org.hibernate.metamodel.internal.PluralAttributeMetadataImpl");
+        LibCustom.override(c, "determineCollectionType", args -> {
+            var clazz = (Class) args[0];
+            if (metaList.isSuperClassOf(clazz))
+                return CollectionClassification.LIST;
 
-//        LibCustom.override(org.hibernate.metamodel.internal.AttributeFactory.class, "determineCollectionType", args -> {
-//            var clazz = (Class) args[0];
-//            if (metaList.isSuperClassOf(clazz))
-//                return PluralAttribute.CollectionType.LIST;
-//
-//            return LibCustom.ORIGINAL;
-//        });
-//
-//        LibCustom.overrideWithSelf(org.hibernate.metamodel.model.domain.internal.PluralAttributeBuilder.class, "build", x -> {
-//            var self = x.self;
-//
-//            var collectionClass = (Class) getRefl(self, "collectionClass");
-//            var listAttrClass = Class.forName("org.hibernate.metamodel.model.domain.internal.ListAttributeImpl");
-//            var constructor = listAttrClass.getDeclaredConstructor(PluralAttributeBuilder.class);
-//            constructor.setAccessible(true);
-//
-//            if (metaList.isSuperClassOf(collectionClass))
-//                return constructor.newInstance(self);
-//
-//            return LibCustom.ORIGINAL;
-//        });
-//
-//        LibCustom.modifyArg(Class.forName("org.hibernate.type.CollectionType"), "getElementsIterator", 0, args -> {
-//            var collection = args[0];
-//            if (metaList.isSuperClassOf(collection))
-//                return metaList.toJava(collection);
-//
-//            return collection;
-//        });
-//
-////        LibCustom.override(CollectionBinder.class, "getBinderFromBasicCollectionType", args ->
-////                metaList.isSuperClassOf(args[0]) ? new BagBinder() : LibCustom.ORIGINAL);
-//
-//        LibCustom.override(BagType.class, "instantiate", args -> {
-//            if (args.length == 1)
-//                return LibCustom.ORIGINAL;
-//
-//            var pers = (AbstractCollectionPersister) args[1];
-//            if (isOfType(pers, metaList)){
-//
-//            }
-////                return checkPersistentBag(bagProvList.of((SharedSessionContractImplementor) args[0]));
-//
-//            return LibCustom.ORIGINAL;
-//        });
-//
-////        LibCustom.override(BagType.class, "wrap", args -> {
-////            var arg1 = args[1];
-////
-////            if (metaList.isSuperClassOf(arg1)) {
-////                var c = metaList.toJava(arg1);
-////                return checkPersistentBag(bagProvList.of((SharedSessionContractImplementor) args[0], c));
-////            }
-////
-////            return LibCustom.ORIGINAL;
-////        });
-//
-//        LibCustom.overrideWithSelf(CollectionType.class, "replaceElements", x -> {
-//            var args = x.args;
-//            var c = (CollectionType) x.self;
-//
-//            return MyCollectionType.replaceElements(args[0], args[1], args[2], (Map) args[3], (SharedSessionContractImplementor) args[4], c);
-//        });
+            return LibCustom.ORIGINAL;
+        });
+
+        LibCustom.modifyArg(PluralAttributeBuilder.class, "build", 0, args -> {
+            var attributeMetadata = (PluralAttributeMetadata) args[0];
+            if (metaList.isSuperClassOf(attributeMetadata.getJavaType()))
+                return mock(attributeMetadata.getClass(), invocation -> {
+                    var m = invocation.getMethod();
+                    m.setAccessible(true);
+                    var name = m.getName();
+
+                    var result = m.invoke(attributeMetadata, invocation.getRawArguments());
+                    if (name.equals("getJavaType"))
+                        return List.class;
+
+                    return result;
+                });
+
+            return LibCustom.ORIGINAL;
+        });
+
+        LibCustom.modifyArg(Class.forName("org.hibernate.type.CollectionType"), "getElementsIterator", 0, args -> {
+            var collection = args[0];
+            if (metaList.isSuperClassOf(collection))
+                return metaList.toJava(collection);
+
+            return collection;
+        });
+
+        LibCustom.override(BagType.class, "instantiate", args -> {
+            if (args.length == 1)
+                return LibCustom.ORIGINAL;
+
+            var pers = (AbstractCollectionPersister) args[1];
+            if (isOfType(pers, metaList))
+                return checkPersistentBag(bagProvList.of((SharedSessionContractImplementor) args[0]));
+
+            return LibCustom.ORIGINAL;
+        });
+
+        LibCustom.override(BagType.class, "wrap", args -> {
+            var arg1 = args[1];
+
+            if (metaList.isSuperClassOf(arg1)) {
+                var collec = metaList.toJava(arg1);
+                return checkPersistentBag(bagProvList.of((SharedSessionContractImplementor) args[0], collec));
+            }
+
+            return LibCustom.ORIGINAL;
+        });
     }
 
     @SneakyThrows
@@ -165,7 +145,7 @@ public class VavrHibernate {
             var args = argsSelf.args;
             var value = args[1];
             var self = argsSelf.self;
-            var field = (Field) getRefl(self, setterFieldImplClass.getDeclaredField("field"));
+            var field = (Field) Utils.getRefl(self, setterFieldImplClass.getDeclaredField("field"));
 
             if (metaOption.isSuperClassOf(field.getType()) && !metaOption.isSuperClassOf(value))
                 return metaOption.fromValue(value);
