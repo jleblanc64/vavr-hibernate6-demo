@@ -36,7 +36,6 @@ public class DataSourceConfig {
         var metaOption = new MetaOptionImpl();
         var metaList = new MetaListImpl();
 
-//        VavrHibernate6.override(metaOption, metaList);
         VavrHibernate.override(metaList);
         VavrHibernate.override(metaOption);
 
@@ -62,19 +61,6 @@ public class DataSourceConfig {
 
     @SneakyThrows
     static void overrideSpring(MetaOption metaOption) {
-        var clazz = Class.forName("org.springframework.data.util.TypeDiscoverer");
-//        LibCustom.modifyArg(clazz, "createInfo", 0, args -> {
-//            var type = args[0].toString();
-//            if (type.startsWith(metaOption.monadClass().getName() + "<")) {
-//                var paramClass = Utils.paramClass(type);
-//                var isEntity = Utils.isEntity(paramClass.getDeclaredAnnotations());
-//                if (isEntity)
-//                    return ParameterizedTypeImpl.of(Optional.class, paramClass, null);
-//            }
-//
-//            return LibCustom.ORIGINAL;
-//        });
-
         LibCustom.modifyReturn(MethodParameter.class, "getGenericParameterType", argsR -> {
             var returned = argsR.returned.toString();
             if (returned.startsWith(metaOption.monadClass().getName() + "<")) {
@@ -102,27 +88,6 @@ public class DataSourceConfig {
 
             return returned;
         });
-
-//        clazz = Class.forName("org.springframework.aop.framework.JdkDynamicAopProxy");
-//        LibCustom.modifyArgWithSelf(clazz, "invoke", 2, argsS -> {
-//            var args = argsS.args;
-//            var self = argsS.self;
-//
-//            var proxiedInterfaces = f((Class[]) Utils.getRefl(self, "proxiedInterfaces"));
-//            if (!proxiedInterfaces.contains(Repository.class))
-//                return args[2];
-//
-//            if (args[2] == null)
-//                return args[2];
-//
-//            var argsL = f((Object[]) args[2]);
-//            return argsL.map(arg -> {
-//                if (!metaOption.isSuperClassOf(arg) || arg instanceof List)
-//                    return arg;
-//
-//                return metaOption.getOrNull(arg);
-//            }).toArray();
-//        });
 
         // request params
         var methodParameterClass = Class.forName("org.springframework.core.MethodParameter");
