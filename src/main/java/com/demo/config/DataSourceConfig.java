@@ -1,12 +1,12 @@
 package com.demo.config;
 
-import com.demo.custom.hibernate.VavrHibernate;
-import com.demo.custom.jackson.VavrJackson;
-import com.demo.custom.spring.OverrideContentType;
-import com.demo.custom.spring.VavrSpring;
-import com.demo.implem.MetaListImpl;
-import com.demo.implem.MetaOptionImpl;
+import com.demo.vavr.MetaListImpl;
+import com.demo.vavr.MetaOptionImpl;
 import com.zaxxer.hikari.HikariDataSource;
+import io.github.jleblanc64.hibernate6.custom.hibernate.VavrHibernate;
+import io.github.jleblanc64.hibernate6.custom.jackson.VavrJackson;
+import io.github.jleblanc64.hibernate6.custom.spring.OverrideContentType;
+import io.github.jleblanc64.hibernate6.custom.spring.VavrSpring;
 import io.github.jleblanc64.libcustom.LibCustom;
 import org.flywaydb.core.Flyway;
 import org.springframework.beans.factory.annotation.Value;

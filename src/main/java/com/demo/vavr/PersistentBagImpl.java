@@ -1,6 +1,6 @@
-package com.demo.implem;
+package com.demo.vavr;
 
-import com.demo.custom.hibernate.duplicate.MyPersistentBag;
+import io.github.jleblanc64.hibernate6.custom.hibernate.duplicate.MyPersistentBag;
 import io.vavr.PartialFunction;
 import io.vavr.collection.List;
 import org.hibernate.engine.spi.SharedSessionContractImplementor;

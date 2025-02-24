@@ -1,9 +1,9 @@
 package com.demo.config;
 
-import com.demo.custom.jackson.deser.UpdateOM;
-import com.demo.implem.MetaListImpl;
-import com.demo.implem.MetaOptionImpl;
+import com.demo.vavr.MetaListImpl;
+import com.demo.vavr.MetaOptionImpl;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.github.jleblanc64.hibernate6.custom.jackson.deser.UpdateOM;
 import io.github.jleblanc64.libcustom.LibCustom;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;

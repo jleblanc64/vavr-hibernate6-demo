@@ -1,4 +1,4 @@
-package com.demo.implem;
+package com.demo.vavr;
 
 import io.github.jleblanc64.libcustom.meta.MetaOption;
 import io.vavr.control.Option;
