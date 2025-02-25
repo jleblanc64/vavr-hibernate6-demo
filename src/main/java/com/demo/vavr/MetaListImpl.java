@@ -1,7 +1,7 @@
 package com.demo.vavr;
 
-import io.github.jleblanc64.hibernate6.custom.meta.BagProvider;
-import io.github.jleblanc64.hibernate6.custom.meta.MetaList;
+import io.github.jleblanc64.hibernate6.meta.BagProvider;
+import io.github.jleblanc64.hibernate6.meta.MetaList;
 import io.vavr.collection.List;
 import org.hibernate.engine.spi.SharedSessionContractImplementor;
 

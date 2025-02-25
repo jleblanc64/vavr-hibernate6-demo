@@ -3,10 +3,10 @@ package com.demo.config;
 import com.demo.vavr.MetaListImpl;
 import com.demo.vavr.MetaOptionImpl;
 import com.zaxxer.hikari.HikariDataSource;
-import io.github.jleblanc64.hibernate6.custom.hibernate.VavrHibernate;
-import io.github.jleblanc64.hibernate6.custom.jackson.VavrJackson;
-import io.github.jleblanc64.hibernate6.custom.spring.OverrideContentType;
-import io.github.jleblanc64.hibernate6.custom.spring.VavrSpring;
+import io.github.jleblanc64.hibernate6.hibernate.VavrHibernate6;
+import io.github.jleblanc64.hibernate6.jackson.VavrJackson;
+import io.github.jleblanc64.hibernate6.spring.OverrideContentType;
+import io.github.jleblanc64.hibernate6.spring.VavrSpring;
 import io.github.jleblanc64.libcustom.LibCustom;
 import org.flywaydb.core.Flyway;
 import org.springframework.beans.factory.annotation.Value;
@@ -31,11 +31,11 @@ public class DataSourceConfig {
         var metaList = new MetaListImpl();
         var metaOption = new MetaOptionImpl();
 
-        VavrHibernate.override(metaList);
+        VavrHibernate6.override(metaList);
         VavrSpring.override(metaList);
         VavrJackson.override(metaList);
 
-        VavrHibernate.override(metaOption);
+        VavrHibernate6.override(metaOption);
         VavrSpring.override(metaOption);
         VavrJackson.override(metaOption);
 
