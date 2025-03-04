@@ -1,7 +1,5 @@
 package com.demo.config;
 
-import com.demo.vavr.MetaListImpl;
-import com.demo.vavr.MetaOptionImpl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.jleblanc64.hibernate6.jackson.deser.UpdateOM;
 import io.github.jleblanc64.libcustom.LibCustom;
@@ -21,9 +19,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
 
     @Override
     public void extendMessageConverters(List<HttpMessageConverter<?>> converters) {
-        var metaList = new MetaListImpl();
-        var metaOption = new MetaOptionImpl();
-        UpdateOM.update(om, converters, metaOption, metaList);
+        UpdateOM.update(om, converters);
         LibCustom.load();
     }
 }
