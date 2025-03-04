@@ -1,7 +1,6 @@
-package com.demo.config;
+package com.demo.spring;
 
 import com.zaxxer.hikari.HikariDataSource;
-import io.github.jleblanc64.hibernate6.hibernate.VavrHibernate6;
 import org.flywaydb.core.Flyway;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -22,8 +21,6 @@ public class DataSourceConfig {
 
     @Bean
     public DataSource getDataSource() {
-        VavrHibernate6.override();
-
         // Hikari
         var ds = new HikariDataSource();
         ds.setJdbcUrl(url);

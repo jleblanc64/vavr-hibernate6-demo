@@ -1,4 +1,4 @@
-package com.demo.config;
+package com.demo.spring;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.jleblanc64.hibernate6.jackson.deser.UpdateOM;
