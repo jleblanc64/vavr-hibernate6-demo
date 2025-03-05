@@ -2,7 +2,6 @@ package com.demo.spring;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.jleblanc64.hibernate6.jackson.deser.UpdateOM;
-import io.github.jleblanc64.libcustom.LibCustom;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.HttpMessageConverter;
@@ -20,6 +19,5 @@ public class WebMvcConfig implements WebMvcConfigurer {
     @Override
     public void extendMessageConverters(List<HttpMessageConverter<?>> converters) {
         UpdateOM.update(om, converters);
-        LibCustom.load();
     }
 }
