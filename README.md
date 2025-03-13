@@ -23,7 +23,7 @@ public class ConfigInit implements ApplicationContextInitializer<ConfigurableApp
 }
 ```
 
-and register the class it in the file: `src/main/resources/META-INF/spring.factories` (replace `com.demo.spring` with your own package) :
+and register the class in the file: `src/main/resources/META-INF/spring.factories` (replace `com.demo.spring` with your own package) :
 ```
 org.springframework.context.ApplicationContextInitializer=com.demo.spring.ConfigInit
 ```
